@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TecnoDiagmarGames · Juegos para móvil</title>
+  <meta name="description" content="TecnoDiagmarGames: estudio independiente de juegos para Android. Conoce Orbit Dash y nuestros próximos juegos.">
+  <meta property="og:title" content="TecnoDiagmarGames">
+  <meta property="og:description" content="Juegos de reflejos con estilo neón para Android.">
+  <meta property="og:image" content="img/orbit-dash/portada.png">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+  <canvas id="estrellas" aria-hidden="true"></canvas>
+
+  <header class="cabecera">
+    <div class="contenedor cabecera-fila">
+      <a class="marca" href="index.html" aria-label="TecnoDiagmarGames, inicio">
+        <svg class="rombo" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 37 20 20 37 3 20Z"/><circle cx="20" cy="20" r="5"/></svg>
+        <span><b class="tecno">TECNO</b><b>DIAGMAR</b><i>GAMES</i></span>
+      </a>
+      <button id="boton-menu" class="boton-menu" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+      <nav class="nav">
+        <a href="#juegos">Juegos</a>
+        <a href="#noticias">Noticias</a>
+        <a href="#estudio">Estudio</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero contenedor">
+      <div class="hero-texto">
+        <p class="antetitulo">Estudio independiente de juegos</p>
+        <h1>Juegos pequeños,<br><span class="neon">reflejos enormes.</span></h1>
+        <p class="hero-sub">En TecnoDiagmarGames creamos juegos para móvil rápidos, coloridos y fáciles de aprender. Nuestro primer título, <b>Orbit Dash</b>, llega muy pronto a Google Play.</p>
+        <div class="hero-acciones">
+          <span id="destacado-play"></span>
+          <a class="btn-sec" href="juego.html?id=orbit-dash">Conocer Orbit Dash</a>
+        </div>
+      </div>
+      <div class="hero-orbita" aria-hidden="true">
+        <div class="anillo a1"><i class="bola"></i></div>
+        <div class="anillo a2"><i class="orbe amarillo"></i></div>
+        <div class="anillo a3"><i class="orbe rojo"></i></div>
+        <div class="sol"></div>
+      </div>
+    </section>
+
+    <section id="juegos" class="contenedor">
+      <h2 class="titulo-seccion">Nuestros juegos</h2>
+      <div id="lista-juegos" class="lista-juegos"></div>
+    </section>
+
+    <section id="noticias" class="contenedor">
+      <h2 class="titulo-seccion">Noticias</h2>
+      <ul id="lista-noticias" class="noticias"></ul>
+    </section>
+
+    <section id="estudio" class="contenedor estudio">
+      <h2 class="titulo-seccion">El estudio</h2>
+      <div class="estudio-rejilla">
+        <p>TecnoDiagmarGames es un pequeño estudio que hace juegos hyper-casual para Android: partidas cortas, una sola mano y mucho color. Cada juego lo diseñamos, programamos y probamos nosotros mismos, escuchando lo que dicen quienes los juegan.</p>
+        <ul class="valores">
+          <li><b>Rápidos</b><span>Partidas de pocos minutos.</span></li>
+          <li><b>Gratis</b><span>Sin pagar para jugar.</span></li>
+          <li><b>Sin conexión</b><span>Juega donde quieras.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="contacto" class="contenedor contacto">
+      <h2 class="titulo-seccion">Contacto</h2>
+      <p>¿Ideas, errores o quieres probar nuestros juegos antes que nadie? Escríbenos:</p>
+      <a class="correo" data-correo href="#">correo</a>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor pie-fila">
+      <span>© <span id="anio">2026</span> TecnoDiagmarGames</span>
+      <a href="https://proelmas601.github.io/orbit-dash-privacy/" target="_blank" rel="noopener">Privacidad de Orbit Dash</a>
+    </div>
+  </footer>
+
+  <script src="js/juegos.js"></script>
+  <script src="js/sitio.js"></script>
+</body>
+</html>
