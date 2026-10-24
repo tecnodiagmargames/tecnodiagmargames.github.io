@@ -125,6 +125,223 @@ function pintarJuego() {
   });
 }
 
+// ---------- Prototipos: tarjetas, página y opiniones (estrellas + comentarios) ----------
+
+function estrellasTexto(media) {
+  const llenas = Math.round(media);
+  return "★".repeat(llenas) + "☆".repeat(5 - llenas);
+}
+
+function resumenNota(lista) {
+  if (!lista.length) return '<span class="nota vacia">Sin calificaciones todavía</span>';
+  const media = lista.reduce((t, c) => t + c.estrellas, 0) / lista.length;
+  return `<span class="nota"><b>${media.toFixed(1).replace(".", ",")}</b> <span class="estrellas-fijas" aria-hidden="true">${estrellasTexto(media)}</span> <small>${lista.length} ${lista.length === 1 ? "opinión" : "opiniones"}</small></span>`;
+}
+
+function tarjetaPrototipo(p) {
+  const enlace = `prototipo.html?id=${encodeURIComponent(p.id)}`;
+  return `<article class="tarjeta" style="--c:${esc(p.color)}">
+    <a class="tarjeta-img proto-mini" href="${enlace}" aria-label="Probar ${esc(p.nombre)}">
+      <span class="pm-arriba"><i></i></span><span class="pm-vs">VS</span><span class="pm-abajo"><i></i></span>
+    </a>
+    <div class="tarjeta-cuerpo">
+      <span class="estado estado-desarrollo">Prototipo · ${esc(p.juego)}</span>
+      <h3><a href="${enlace}">${esc(p.nombre)}</a></h3>
+      <p>${esc(p.lema)}</p>
+      <div class="nota-tarjeta" data-nota="${esc(p.id)}"></div>
+      <div class="tarjeta-acciones">
+        <a class="btn-sec" href="${enlace}">Probar y opinar</a>
+      </div>
+    </div>
+  </article>`;
+}
+
+function pintarPrototipos() {
+  const lista = document.getElementById("lista-prototipos");
+  if (!lista || typeof PROTOTIPOS === "undefined") return;
+  lista.innerHTML = PROTOTIPOS.map(tarjetaPrototipo).join("");
+  if (!firebaseListo()) return;
+  lista.querySelectorAll("[data-nota]").forEach(async (zona) => {
+    try { zona.innerHTML = resumenNota(await leerComentarios(zona.dataset.nota)); } catch (e) { zona.innerHTML = ""; }
+  });
+}
+
+function pintarPrototipo() {
+  const zona = document.getElementById("prototipo");
+  if (!zona) return;
+  const id = new URLSearchParams(location.search).get("id");
+  const p = (typeof PROTOTIPOS !== "undefined" ? PROTOTIPOS : []).find((x) => x.id === id);
+  if (!p) {
+    zona.innerHTML = `<section class="contenedor vacio"><h1>Prototipo no encontrado</h1><p><a class="enlace" href="index.html#prototipos">← Ver los prototipos</a></p></section>`;
+    return;
+  }
+  document.title = `${p.nombre} · Prototipo · ${ESTUDIO.nombre}`;
+  zona.style.setProperty("--c", p.color);
+  zona.innerHTML = `
+    <section class="contenedor proto-cabecera">
+      <span class="estado estado-desarrollo">Prototipo · ${esc(p.juego)}</span>
+      <h1>${esc(p.nombre)}</h1>
+      <p class="lema">${esc(p.lema)}</p>
+      <div id="nota-cabecera"></div>
+    </section>
+
+    <section class="contenedor proto-rejilla">
+      <div class="proto-pantalla">
+        <iframe src="${esc(p.url)}" title="Prototipo jugable: ${esc(p.nombre)}" allow="autoplay; fullscreen"></iframe>
+        <a class="enlace" href="${esc(p.url)}" target="_blank" rel="noopener">Abrir a pantalla completa ↗</a>
+      </div>
+      <div class="proto-info">
+        ${p.descripcion.map((t) => `<p>${esc(t)}</p>`).join("")}
+        <h2>Cómo se juega</h2>
+        <p>${esc(p.controles)}</p>
+        <h2>Qué probar</h2>
+        <ul>${p.probar.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>
+        <p class="aviso">Es un prototipo: no es el juego final y puede tener fallos. Tu opinión decide si llega a ${esc(p.juego)} y cómo.</p>
+      </div>
+    </section>
+
+    <section class="contenedor" id="opiniones">
+      <h2 class="titulo-seccion">Opiniones</h2>
+      <div id="zona-opinar"></div>
+      <ul id="lista-comentarios" class="comentarios"></ul>
+    </section>
+
+    <section class="contenedor juego-pie">
+      <a class="enlace" href="index.html#prototipos">← Todos los prototipos</a>
+    </section>`;
+
+  if (!firebaseListo()) {
+    document.getElementById("zona-opinar").innerHTML = `<p class="aviso">Las calificaciones y comentarios se activan muy pronto. Mientras tanto, escríbenos a <a class="enlace" href="mailto:${esc(ESTUDIO.correo)}">${esc(ESTUDIO.correo)}</a>.</p>`;
+    return;
+  }
+  pintarFormulario(p);
+  cargarComentarios(p);
+}
+
+function pintarFormulario(p) {
+  const zona = document.getElementById("zona-opinar");
+  zona.innerHTML = `
+    <form id="form-opinion" class="form-opinion" novalidate>
+      <fieldset class="elegir-estrellas">
+        <legend>Tu calificación</legend>
+        <div class="estrellas-input">
+          ${[5, 4, 3, 2, 1].map((n) => `<input type="radio" id="est-${n}" name="estrellas" value="${n}"><label for="est-${n}" title="${n} de 5">★</label>`).join("")}
+        </div>
+      </fieldset>
+      <label class="campo"><span>Tu nombre o apodo</span>
+        <input id="op-nombre" name="nombre" maxlength="40" autocomplete="nickname" required>
+      </label>
+      <label class="campo"><span>Comentario <small>(opcional)</small></span>
+        <textarea id="op-texto" name="texto" maxlength="500" rows="4" placeholder="¿Qué te gustó? ¿Qué cambiarías?"></textarea>
+      </label>
+      <input class="trampa" id="op-web" name="web" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="form-fila">
+        <button class="btn-sec" type="submit">Publicar opinión</button>
+        <span id="op-estado" class="op-estado" role="status"></span>
+      </div>
+      <p class="nota-privacidad">Tu nombre, la calificación y el comentario serán públicos en esta página. No pongas datos personales.</p>
+    </form>`;
+  const form = document.getElementById("form-opinion");
+  const estado = document.getElementById("op-estado");
+  let enviando = false;
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (enviando) return;
+    const elegida = form.querySelector("input[name=estrellas]:checked");
+    const estrellas = elegida ? Number(elegida.value) : 0;
+    const nombre = form.nombre.value.trim();
+    const texto = form.texto.value.trim();
+    if (!estrellas) { estado.textContent = "Elige de 1 a 5 estrellas."; return; }
+    if (!nombre) { estado.textContent = "Escribe un nombre o apodo."; form.nombre.focus(); return; }
+    if (form.web.value) { form.reset(); estado.textContent = "¡Gracias!"; return; }   // casilla trampa: solo la rellenan los bots
+    enviando = true;
+    estado.textContent = "Publicando…";
+    try {
+      await enviarComentario({ proto: p.id, nombre, estrellas, texto });
+      form.reset();
+      estado.textContent = "¡Gracias! Tu opinión ya está publicada.";
+      cargarComentarios(p);
+      setTimeout(() => { enviando = false; }, 20000);   // evita publicar muchas seguidas
+    } catch (err) {
+      enviando = false;
+      estado.textContent = "No se pudo publicar. Revisa tu conexión y vuelve a intentarlo.";
+    }
+  });
+}
+
+async function cargarComentarios(p) {
+  const lista = document.getElementById("lista-comentarios");
+  const cab = document.getElementById("nota-cabecera");
+  lista.innerHTML = '<li class="cargando">Cargando opiniones…</li>';
+  try {
+    const comentarios = await leerComentarios(p.id);
+    cab.innerHTML = resumenNota(comentarios);
+    lista.innerHTML = comentarios.length
+      ? comentarios.map((c) => `<li>
+          <div class="com-cabecera"><b>${esc(c.nombre)}</b><span class="estrellas-fijas" aria-label="${c.estrellas} de 5">${estrellasTexto(c.estrellas)}</span>${c.fecha ? `<time datetime="${esc(c.fecha)}">${fechaBonita(c.fecha.slice(0, 10))}</time>` : ""}</div>
+          ${c.texto ? `<p>${esc(c.texto)}</p>` : ""}
+        </li>`).join("")
+      : '<li class="cargando">Nadie ha opinado todavía. ¡Sé el primero!</li>';
+  } catch (e) {
+    lista.innerHTML = '<li class="cargando">No se pudieron cargar las opiniones ahora mismo.</li>';
+  }
+}
+
+// Firestore por su API REST (sin librerías). Reglas en docs/firebase/firestore.rules
+function firebaseListo() {
+  return typeof FIREBASE !== "undefined" && FIREBASE.projectId && FIREBASE.apiKey;
+}
+function rutaFirestore() {
+  return `https://firestore.googleapis.com/v1/projects/${FIREBASE.projectId}/databases/(default)/documents`;
+}
+
+async function leerComentarios(proto) {
+  const consulta = {
+    structuredQuery: {
+      from: [{ collectionId: "comentarios" }],
+      where: { fieldFilter: { field: { fieldPath: "proto" }, op: "EQUAL", value: { stringValue: proto } } },
+      limit: 300,
+    },
+  };
+  const r = await fetch(`${rutaFirestore()}:runQuery?key=${encodeURIComponent(FIREBASE.apiKey)}`, {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(consulta),
+  });
+  if (!r.ok) throw new Error("Firestore " + r.status);
+  const filas = await r.json();
+  return filas.filter((f) => f.document).map((f) => {
+    const d = f.document.fields;
+    return {
+      nombre: d.nombre ? d.nombre.stringValue : "Anónimo",
+      estrellas: Math.max(1, Math.min(5, Number(d.estrellas ? d.estrellas.integerValue : 0))),
+      texto: d.texto ? d.texto.stringValue : "",
+      fecha: d.fecha ? d.fecha.timestampValue : "",
+    };
+  }).sort((a, b) => b.fecha.localeCompare(a.fecha));   // la más nueva arriba
+}
+
+async function enviarComentario(c) {
+  const id = Array.from(crypto.getRandomValues(new Uint8Array(10)), (b) => b.toString(16).padStart(2, "0")).join("");
+  const cuerpo = {
+    writes: [{
+      update: {
+        name: `projects/${FIREBASE.projectId}/databases/(default)/documents/comentarios/${id}`,
+        fields: {
+          proto: { stringValue: c.proto },
+          nombre: { stringValue: c.nombre },
+          estrellas: { integerValue: String(c.estrellas) },
+          texto: { stringValue: c.texto },
+        },
+      },
+      updateTransforms: [{ fieldPath: "fecha", setToServerValue: "REQUEST_TIME" }],   // la fecha la pone el servidor
+      currentDocument: { exists: false },
+    }],
+  };
+  const r = await fetch(`${rutaFirestore()}:commit?key=${encodeURIComponent(FIREBASE.apiKey)}`, {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo),
+  });
+  if (!r.ok) throw new Error("Firestore " + r.status);
+}
+
 function abrirVisor(src, alt) {
   const v = document.createElement("div");
   v.className = "visor";
@@ -232,5 +449,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".nav a").forEach((a) => a.addEventListener("click", () => document.body.classList.remove("menu-abierto")));
   pintarInicio();
   pintarJuego();
+  pintarPrototipos();
+  pintarPrototipo();
   estrellas();
 });

@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="../../img/favicon.svg" type="image/svg+xml">
+<!-- Copia de prototipos/duelo/index.html (se regenera desde allí; ver web/LEEME.md) -->
+<script>if (window.self !== window.top) document.documentElement.classList.add("embebido");</script>
+<title>Orbit King Duelo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Audiowide&family=Chakra+Petch:wght@400;600;700&display=swap">
+<style>
+/* Layout: el teléfono (pantalla dividida, rival arriba / tú abajo) a la izquierda y la ficha del diseño a la derecha; en móvil, uno debajo del otro. */
+:root {
+  --bg: #04050d;
+  --panel: #0b0e22;
+  --line: #1c2250;
+  --ink: #e9ecff;
+  --muted: #8b93c9;
+  --cyan: #3ef0ff;
+  --violet: #b77bff;
+  --gold: #ffd23f;
+  --red: #ff3b5c;
+  --green: #4dffa6;
+  --f-display: "Audiowide", "Arial Black", system-ui, sans-serif;
+  --f-body: "Chakra Petch", "Segoe UI", system-ui, sans-serif;
+  color-scheme: dark;
+}
+html, body { min-height: 100%; }
+body {
+  background: radial-gradient(ellipse at 30% 0%, #10153a 0%, var(--bg) 60%) fixed, var(--bg);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 15px;
+  line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 16px;
+}
+.wrap {
+  display: flex; gap: 40px; justify-content: center; align-items: flex-start;
+  max-width: 1180px; margin: 0 auto;
+}
+@media (max-width: 900px) { .wrap { flex-direction: column; align-items: center; gap: 28px; } }
+
+/* ---------- Teléfono ---------- */
+.phone {
+  position: relative; flex: none;
+  width: min(100%, calc((100svh - 32px) * 0.5625), 470px);
+  aspect-ratio: 9 / 16; max-width: 100%;
+  border-radius: 28px; overflow: hidden;
+  background: #000;
+  box-shadow: 0 0 0 2px #1d2352, 0 0 0 9px #0a0c1d, 0 0 0 10px #262d63, 0 30px 80px #000c, 0 0 90px #3ef0ff22;
+  user-select: none; -webkit-user-select: none; touch-action: none;
+}
+canvas { display: block; width: 100%; height: 100%; }
+.screen {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 14px; padding: 24px 22px; text-align: center;
+  background: radial-gradient(circle at 50% 35%, #141a48ee, #04050df2 70%);
+}
+.screen[hidden] { display: none !important; }
+.brand { font-family: var(--f-display); font-size: 13px; letter-spacing: .3em; color: var(--muted); }
+.big {
+  font-family: var(--f-display); font-size: clamp(38px, 11cqw, 62px); line-height: 1; margin: 0;
+  color: #fff; text-shadow: 0 0 18px var(--cyan), 0 0 42px #3ef0ff66;
+  text-wrap: balance;
+}
+.phone { container-type: inline-size; }
+.sub { color: var(--muted); font-size: 14px; margin: 0; max-width: 30ch; }
+.trophy {
+  display: inline-flex; gap: 8px; align-items: center; padding: 6px 14px; border-radius: 99px;
+  border: 1px solid #ffd23f55; color: var(--gold); font-weight: 700; font-variant-numeric: tabular-nums;
+  background: #ffd23f12; font-size: 14px;
+}
+.btn {
+  appearance: none; border: 0; cursor: pointer; width: 100%; max-width: 300px;
+  font-family: var(--f-display); font-size: 18px; letter-spacing: .04em; color: #06101c;
+  padding: 14px 16px 12px; border-radius: 16px;
+  background: linear-gradient(180deg, #7ff7ff, var(--cyan));
+  box-shadow: 0 5px 0 #138a99, 0 0 24px #3ef0ff55;
+  display: flex; flex-direction: column; gap: 2px; align-items: center;
+  transition: transform .08s;
+}
+.btn small { font-family: var(--f-body); font-weight: 700; font-size: 12px; letter-spacing: .02em; opacity: .75; }
+.btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #138a99; }
+.btn.alt { background: linear-gradient(180deg, #d3b0ff, var(--violet)); box-shadow: 0 5px 0 #6a3aa8, 0 0 24px #b77bff55; }
+.btn.alt:active { box-shadow: 0 1px 0 #6a3aa8; }
+.btn.ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 2px #2c356f; font-size: 15px; }
+.btn:focus-visible, .chip:focus-visible, .emote:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.diff { display: flex; gap: 6px; justify-content: center; }
+.chip {
+  appearance: none; cursor: pointer; border: 1px solid #2c356f; background: #0b0e22; color: var(--muted);
+  font-family: var(--f-body); font-weight: 700; font-size: 13px; padding: 6px 12px; border-radius: 99px;
+}
+.chip[aria-pressed="true"] { color: #fff; border-color: var(--violet); background: #b77bff2a; }
+.stack { display: flex; flex-direction: column; gap: 12px; align-items: center; width: 100%; }
+.hint { font-size: 12px; color: var(--muted); margin: 0; }
+.hint b { color: var(--ink); }
+
+/* Buscando rival */
+.radar { width: 150px; height: 150px; border-radius: 50%; position: relative;
+  background: repeating-radial-gradient(circle, #3ef0ff22 0 1px, transparent 1px 25px); box-shadow: inset 0 0 0 2px #3ef0ff44; }
+.radar::after { content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: conic-gradient(from 0deg, #3ef0ff88, transparent 25%); animation: spin 1.4s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.vs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; width: 100%; }
+.card { background: #0b0e22; border: 1px solid #2c356f; border-radius: 16px; padding: 12px 8px; min-width: 0; }
+.card .n { font-weight: 700; font-size: 15px; overflow-wrap: anywhere; }
+.card .m { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.card.me { border-color: #3ef0ff77; } .card.op { border-color: #b77bff77; }
+.vs .x { font-family: var(--f-display); font-size: 26px; color: var(--gold); text-shadow: 0 0 14px #ffd23f88; }
+
+/* Resultado */
+.res { width: 100%; max-width: 320px; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 14px; }
+.res th, .res td { padding: 5px 6px; border-bottom: 1px solid #1c2250; }
+.res th { color: var(--muted); font-weight: 600; text-align: left; }
+.res td { text-align: right; font-weight: 700; }
+.res thead th { text-align: right; } .res thead th:first-child { text-align: left; }
+.res .c1 { color: var(--cyan); } .res .c2 { color: var(--violet); }
+.delta { font-family: var(--f-display); font-size: 20px; }
+
+/* Emotes en partida */
+.emotes { position: absolute; left: 0; right: 0; bottom: 10px; display: flex; gap: 8px; justify-content: center; pointer-events: none; }
+.emotes[hidden] { display: none !important; }
+.emote {
+  pointer-events: auto; appearance: none; cursor: pointer; border: 1px solid #ffffff2a; background: #0b0e22cc;
+  color: var(--ink); font-family: var(--f-body); font-weight: 700; font-size: 13px; padding: 5px 11px; border-radius: 99px;
+}
+.mute { position: absolute; top: 10px; right: 10px; z-index: 3; }
+
+/* ---------- Ficha de diseño ---------- */
+.doc { max-width: 560px; min-width: 0; }
+.doc .eyebrow { font-family: var(--f-display); font-size: 12px; letter-spacing: .3em; color: var(--cyan); }
+.doc h1 { font-family: var(--f-display); font-size: clamp(30px, 4vw, 42px); line-height: 1.1; margin: 6px 0 12px; text-wrap: balance; }
+.doc h2 { font-family: var(--f-display); font-size: 17px; letter-spacing: .04em; margin: 26px 0 8px; color: #fff; text-wrap: balance; }
+.doc p { margin: 0 0 10px; color: #c7cdf2; max-width: 62ch; }
+.doc ul, .doc ol { margin: 0 0 10px; padding-left: 20px; color: #c7cdf2; }
+.doc li { margin: 4px 0; }
+.doc b { color: #fff; }
+.atk { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 10px 0; }
+@media (max-width: 480px) { .atk { grid-template-columns: 1fr; } }
+.atk div { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: #0b0e22; min-width: 0; }
+.atk div b { display: block; font-family: var(--f-display); font-size: 14px; letter-spacing: .04em; }
+.atk span { font-size: 13px; color: var(--muted); }
+.k { color: var(--red); } .r { color: var(--gold); } .d { color: var(--violet); }
+.phase { border-left: 2px solid var(--line); padding-left: 14px; margin: 10px 0; }
+.phase b.tag { font-family: var(--f-display); font-size: 12px; letter-spacing: .1em; color: var(--cyan); }
+code { font-family: ui-monospace, Consolas, monospace; font-size: 13px; background: #0b0e22; border: 1px solid var(--line); padding: 1px 5px; border-radius: 5px; color: var(--ink); }
+@media (prefers-reduced-motion: reduce) { .radar::after { animation-duration: 6s; } }
+body { margin: 0; }
+/* Dentro de la web del estudio (iframe): solo el teléfono, a pantalla completa */
+.embebido body { padding: 0; background: #000; }
+.embebido .wrap { display: block; max-width: none; }
+.embebido .doc { display: none; }
+.embebido .phone { width: 100%; height: 100vh; aspect-ratio: auto; border-radius: 0; box-shadow: none; }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <div class="phone" id="phone">
+    <canvas id="cv" aria-label="Partida en pantalla dividida: rival arriba, tú abajo"></canvas>
+    <button class="chip mute" id="mute" type="button" aria-pressed="false">Sonido: sí</button>
+    <div class="emotes" id="emotes" hidden>
+      <button class="emote" type="button" data-e="¡GG!">¡GG!</button>
+      <button class="emote" type="button" data-e="¡Uy!">¡Uy!</button>
+      <button class="emote" type="button" data-e="🔥">🔥</button>
+      <button class="emote" type="button" data-e="😎">😎</button>
+    </div>
+
+    <!-- Menú -->
+    <div class="screen" id="sMenu">
+      <div class="brand">ORBIT KING</div>
+      <h2 class="big">DUELO</h2>
+      <p class="sub">El mismo cielo para los dos. Gana quien haga más puntos en 90&nbsp;s o quien deje al otro sin vidas.</p>
+      <div class="trophy" id="trophy">🏆 100 · Liga Bronce</div>
+      <div class="stack">
+        <button class="btn" id="bOnline" type="button">RIVAL AL AZAR<small>Online · se juegan trofeos</small></button>
+        <button class="btn alt" id="bBot" type="button">VS MÁQUINA<small>Práctica · sin trofeos</small></button>
+        <div class="diff" role="group" aria-label="Dificultad de la máquina">
+          <button class="chip" type="button" data-d="facil" aria-pressed="false">Fácil</button>
+          <button class="chip" type="button" data-d="normal" aria-pressed="true">Normal</button>
+          <button class="chip" type="button" data-d="dificil" aria-pressed="false">Difícil</button>
+        </div>
+      </div>
+      <p class="hint">Toca la <b>mitad izquierda</b> para ir hacia dentro y la <b>derecha</b> hacia fuera. En PC: <b>←</b> <b>→</b> o <b>A</b> <b>D</b>.</p>
+    </div>
+
+    <!-- Buscando rival -->
+    <div class="screen" id="sSearch" hidden>
+      <div class="brand">EMPAREJAMIENTO</div>
+      <div class="radar" aria-hidden="true"></div>
+      <p class="sub" id="searchTxt">Buscando rival con trofeos parecidos…</p>
+      <div class="trophy" id="searchTime">0:00 · Región Sudamérica</div>
+      <div class="stack"><button class="btn ghost" id="bCancel" type="button">CANCELAR</button></div>
+    </div>
+
+    <!-- Rival encontrado -->
+    <div class="screen" id="sFound" hidden>
+      <div class="brand" id="foundTitle">¡RIVAL ENCONTRADO!</div>
+      <div class="vs">
+        <div class="card me"><div class="n">Tú</div><div class="m" id="vsMe">🏆 100</div></div>
+        <div class="x">VS</div>
+        <div class="card op"><div class="n" id="vsName">—</div><div class="m" id="vsOp">—</div></div>
+      </div>
+      <p class="sub" id="vsSeed">Semilla compartida #00000</p>
+    </div>
+
+    <!-- Resultado -->
+    <div class="screen" id="sEnd" hidden>
+      <div class="brand" id="endReason">SE ACABÓ EL TIEMPO</div>
+      <h2 class="big" id="endTitle">VICTORIA</h2>
+      <div class="delta" id="endDelta">+25 🏆</div>
+      <table class="res">
+        <thead><tr><th></th><th class="c1">Tú</th><th class="c2" id="endOpName">Rival</th></tr></thead>
+        <tbody id="endBody"></tbody>
+      </table>
+      <div class="stack">
+        <button class="btn" id="bAgain" type="button">REVANCHA</button>
+        <button class="btn ghost" id="bMenu" type="button">MENÚ</button>
+      </div>
+    </div>
+  </div>
+
+  <article class="doc">
+    <div class="eyebrow">PROPUESTA · MODO ONLINE</div>
+    <h1>Duelo orbital en pantalla dividida</h1>
+    <p>Dos jugadores, <b>la misma semilla</b> (los mismos orbes y rojos en el mismo orden) y 90 segundos. Arriba ves al rival <b>en vivo</b>, en pequeño; abajo juegas tú a tamaño casi normal, con un <b>fantasma violeta</b> que marca por qué línea va él. Así la comparación es directa: si el otro coge un orbe que tú dejaste pasar, lo ves al instante.</p>
+
+    <h2>Cómo se gana</h2>
+    <ul>
+      <li>Al acabar el tiempo gana quien tenga <b>más puntos</b>. La barra del centro muestra quién va por delante.</li>
+      <li>Cada uno tiene <b>3 vidas</b>. Un rojo quita una vida y el combo; quien se queda sin vidas pierde por <b>K.O.</b> aunque vaya ganando en puntos. Eso evita que el que va delante se limite a esperar.</li>
+      <li>Online se juegan <b>trofeos</b> (+25 al ganar, −15 al perder) y ligas. Contra la máquina es práctica.</li>
+    </ul>
+
+    <h2>Ataques: lo que lo hace un duelo</h2>
+    <p>Cada orbe llena tu barra de ataque (en fiebre, el doble). Al llenarse se lanza sola uno de estos ataques al rival, con <b>1 segundo de aviso</b> para que pueda reaccionar. Sigue siendo un juego de un solo toque.</p>
+    <div class="atk">
+      <div><b class="k">MURO</b><span>Rojos en todas sus líneas menos una, con un orbe en el hueco.</span></div>
+      <div><b class="r">REVERSA</b><span>Le cambia el sentido de giro, como el cambio de sentido de Aventura.</span></div>
+      <div><b class="d">APAGÓN</b><span>3,5 s a oscuras salvo un círculo de luz alrededor de su bolita.</span></div>
+    </div>
+
+    <h2>Cómo hacerlo de verdad en Godot</h2>
+    <p>La clave es que el juego ya es casi determinista: con la misma semilla y los mismos toques sale la misma partida. Por eso no hace falta enviar la pantalla, solo <b>los toques con su instante</b> (unos bytes por segundo) y, cada 100 ms, una foto pequeña del estado (línea, ángulo, puntos, vidas) para corregir desvíos.</p>
+    <div class="phase"><b class="tag">FASE 1 · FANTASMAS</b>
+      <p>"Rival al azar" empareja con <b>la grabación de la partida de un jugador real</b> (semilla y toques), guardada en un servidor sencillo (Firebase o Supabase). Se ve en vivo y no hace falta que haya otra persona conectada, que es lo normal en un juego recién lanzado. Los ataques que lanzas restan puntos al fantasma porque su partida ya está grabada.</p></div>
+    <div class="phase"><b class="tag">FASE 2 · TIEMPO REAL</b>
+      <p>Con más jugadores, partidas en vivo con <b>Nakama</b> (servidor libre con emparejamiento y SDK para Godot) o un relé con <code>WebSocketMultiplayerPeer</code>. Si en 8 s no aparece nadie, entra un fantasma o la máquina sin que el jugador espere.</p></div>
+    <div class="phase"><b class="tag">FASE 3 · EXTRAS</b>
+      <p>Ranking por ligas, duelo con amigos por código, emotes (ya en el prototipo) y skins que se ven en la pantalla del rival.</p></div>
+
+    <h2>Qué es de verdad en este prototipo</h2>
+    <p>La partida, la semilla compartida, los ataques, el fantasma y la máquina funcionan. El emparejamiento, el ping y los rivales "online" están <b>simulados</b>: detrás hay una IA que mira los objetos que vienen, con un tiempo de reacción y errores según la dificultad. Los trofeos se guardan solo en este navegador.</p>
+  </article>
+</div>
+
+<script>
+(() => {
+const TAU = Math.PI * 2;
+const MATCH_TIME = 90, LIVES = 3, ENERGY_MAX = 10, HIT = 0.115, WARN = 1.0;
+const DIFFS = {
+  facil:   { react: 0.36, err: 0.15, look: 1.2, label: "Fácil" },
+  normal:  { react: 0.22, err: 0.06, look: 1.5, label: "Normal" },
+  dificil: { react: 0.13, err: 0.02, look: 1.9, label: "Difícil" },
+};
+const ATTACKS = {
+  muro:    { name: "MURO",    col: "#ff3b5c" },
+  reversa: { name: "REVERSA", col: "#ffd23f" },
+  apagon:  { name: "APAGÓN",  col: "#b77bff" },
+};
+const RIVALS = [
+  ["NebulaRex", "MX"], ["Kaori_77", "AR"], ["ZetaOrbit", "CO"], ["luna.pz", "CL"], ["ElCometa", "ES"],
+  ["Vortex_9", "PE"], ["SolNegro", "UY"], ["Pixelia", "VE"], ["Andrómeda", "EC"], ["RayoAzul", "BO"],
+];
+
+const mulberry32 = a => () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const wrap = a => { a = (a + Math.PI) % TAU; if (a < 0) a += TAU; return a - Math.PI; };
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const radFrac = l => 0.36 + 0.32 * l;
+
+// ---------- guardado (solo comodidad: trofeos en este navegador) ----------
+let trophies = 100;
+try { const v = parseInt(localStorage.getItem("ok_duel_trophies"), 10); if (!isNaN(v)) trophies = v; } catch (e) {}
+const saveTrophies = () => { try { localStorage.setItem("ok_duel_trophies", String(trophies)); } catch (e) {} };
+const league = t => t >= 400 ? "Liga Oro" : t >= 200 ? "Liga Plata" : "Liga Bronce";
+
+// ---------- sonido ----------
+let actx = null, soundOn = true;
+function beep(freq, dur = 0.08, type = "sine", vol = 0.07) {
+  if (!soundOn) return;
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(vol, actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + dur);
+    o.connect(g).connect(actx.destination); o.start(); o.stop(actx.currentTime + dur);
+  } catch (e) {}
+}
+
+// ---------- jugador ----------
+function newPlayer(name, seed, bot) {
+  return {
+    name, lines: 3, line: 1, lineVis: 1, a: -Math.PI / 2, dir: 1, t: 0,
+    score: 0, combo: 0, best: 0, orbs: 0, sent: 0, lives: LIVES, ko: false,
+    inv: 0, items: [], energy: 0, rng: mulberry32(seed), xr: mulberry32(seed ^ 0x5bd1e995 ^ (bot ? 77 : 13)),
+    spawnT: 0.6, dark: 0, incoming: null, queue: [], shake: 0, flash: 0,
+    parts: [], trail: [], banner: null, emote: null, bot, hitFlash: 0,
+  };
+}
+
+function spawn(p) {
+  // siempre se consumen 3 números: así los dos jugadores reciben la misma secuencia
+  const r1 = p.rng(), r2 = p.rng(), r3 = p.rng();
+  const line = Math.floor(r1 * p.lines);
+  const a = p.a + p.dir * (1.5 + r2 * 1.2);
+  let type = r3 < Math.min(0.55, 0.4 + p.t * 0.002) ? "red" : "orb";
+  for (const it of p.items) if (it.line === line && Math.abs(wrap(it.a - a)) < 0.3) return;
+  if (type === "red") {
+    const blocked = new Set([line]);
+    for (const it of p.items) if (it.type === "red" && Math.abs(wrap(it.a - a)) < 0.45) blocked.add(it.line);
+    if (blocked.size >= p.lines) type = "orb";
+  }
+  p.items.push({ line, a, type, age: 0 });
+}
+
+function applyAttack(p, type) {
+  if (type === "muro") {
+    const gap = Math.floor(p.xr() * p.lines), a = p.a + p.dir * 1.9;
+    p.items = p.items.filter(it => Math.abs(wrap(it.a - a)) > 0.35);
+    for (let l = 0; l < p.lines; l++) p.items.push({ line: l, a, type: l === gap ? "orb" : "red", age: 0 });
+  } else if (type === "reversa") {
+    p.dir *= -1; p.flash = 1;
+    p.items = p.items.filter(it => { const pr = wrap((it.a - p.a) * p.dir); return !(it.type === "red" && pr > -0.1 && pr < 0.7); });
+  } else {
+    p.dark = 3.5;
+  }
+  p.banner = { text: ATTACKS[type].name + "!", col: ATTACKS[type].col, t: 1.1 };
+}
+
+function addParts(p, x, y, col, n) {
+  for (let i = 0; i < n; i++) {
+    const ang = Math.random() * TAU, sp = 0.4 + Math.random() * 0.9;
+    p.parts.push({ x, y, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp, life: 0.5 + Math.random() * 0.3, col });
+  }
+}
+
+function step(p, dt, opp, human) {
+  if (p.ko) { p.lineVis += (p.line - p.lineVis) * Math.min(1, dt * 16); return; }
+  p.t += dt;
+  const speed = Math.min(3.6, 2.0 + 0.018 * p.t);
+  p.a += p.dir * speed * dt;
+  p.lineVis += (p.line - p.lineVis) * Math.min(1, dt * 16);
+  p.inv = Math.max(0, p.inv - dt); p.dark = Math.max(0, p.dark - dt);
+  p.shake = Math.max(0, p.shake - dt * 3); p.flash = Math.max(0, p.flash - dt * 2); p.hitFlash = Math.max(0, p.hitFlash - dt * 3);
+  if (p.banner && (p.banner.t -= dt) <= 0) p.banner = null;
+  if (p.emote && (p.emote.t -= dt) <= 0) p.emote = null;
+
+  if (!p.incoming && p.queue.length) { p.incoming = { type: p.queue.shift(), t: WARN }; if (human) beep(220, 0.25, "square", 0.05); }
+  if (p.incoming && (p.incoming.t -= dt) <= 0) { applyAttack(p, p.incoming.type); p.incoming = null; if (human) beep(140, 0.3, "sawtooth", 0.06); }
+
+  if ((p.spawnT -= dt) <= 0) { p.spawnT += Math.max(0.5, 0.95 - 0.006 * p.t); spawn(p); }
+  if (p.bot) botThink(p, dt);
+
+  const br = radFrac(p.lineVis), bx = Math.cos(p.a) * br, by = Math.sin(p.a) * br;
+  p.trail.push([bx, by]); if (p.trail.length > 14) p.trail.shift();
+  for (let i = p.items.length - 1; i >= 0; i--) {
+    const it = p.items[i]; it.age += dt;
+    const prog = wrap((it.a - p.a) * p.dir);
+    if (prog < -0.4) {
+      p.items.splice(i, 1);
+      if (it.type === "orb" && prog > -1.3 && p.combo > 0) { p.combo = 0; if (human) beep(180, 0.12, "triangle", 0.04); }
+      continue;
+    }
+    const r = radFrac(it.line), ix = Math.cos(it.a) * r, iy = Math.sin(it.a) * r;
+    if ((ix - bx) ** 2 + (iy - by) ** 2 > HIT * HIT) continue;
+    if (it.type === "orb") {
+      p.combo++; p.best = Math.max(p.best, p.combo); p.orbs++;
+      const mult = p.combo >= 15 ? 2 : 1;
+      p.score += p.combo * mult; p.energy += mult;
+      addParts(p, ix, iy, mult > 1 ? "#ff9b3f" : "#ffd23f", 8);
+      if (human) beep(660 + Math.min(p.combo, 20) * 30, 0.07);
+      if (p.energy >= ENERGY_MAX) {
+        p.energy = 0; p.sent++;
+        const type = ["muro", "reversa", "apagon"][Math.floor(p.xr() * 3)];
+        if (!opp.ko) opp.queue.push(type);
+        p.banner = { text: ATTACKS[type].name + " ENVIADO", col: ATTACKS[type].col, t: 1.1 };
+        if (human) { beep(880, 0.1, "square", 0.05); setTimeout(() => beep(1320, 0.12, "square", 0.05), 90); }
+      }
+    } else {
+      if (p.inv > 0) continue;
+      p.lives--; p.combo = 0; p.inv = 1.6; p.shake = 1; p.hitFlash = 1;
+      addParts(p, bx, by, "#ff3b5c", 16);
+      if (human) { beep(90, 0.3, "sawtooth", 0.09); if (navigator.vibrate) try { navigator.vibrate(60); } catch (e) {} }
+      if (p.lives <= 0) p.ko = true;
+      if (p.bot && Math.random() < 0.25) say(p, ["¡Uy!", "😱"][Math.floor(Math.random() * 2)]);
+    }
+    p.items.splice(i, 1);
+  }
+  for (let i = p.parts.length - 1; i >= 0; i--) {
+    const q = p.parts[i]; q.life -= dt; q.x += q.vx * dt * 0.35; q.y += q.vy * dt * 0.35;
+    if (q.life <= 0) p.parts.splice(i, 1);
+  }
+}
+
+// IA: mira lo que viene en cada línea y se mueve una línea cada vez que "reacciona"
+function botThink(p, dt) {
+  const b = p.bot;
+  if ((b.next -= dt) > 0) return;
+  b.next = b.react * (0.7 + Math.random() * 0.6);
+  const blind = p.dark > 0, look = blind ? b.look * 0.5 : b.look, err = blind ? b.err * 3 : b.err;
+  let best = p.line, bestS = -1e9;
+  for (let L = 0; L < p.lines; L++) {
+    let s = -Math.abs(L - p.line) * 0.6;
+    const lo = Math.min(L, p.line), hi = Math.max(L, p.line);
+    for (const it of p.items) {
+      const prog = wrap((it.a - p.a) * p.dir);
+      if (prog < 0.02 || prog > look) continue;
+      if (it.line === L) s += it.type === "red" ? -60 / (prog + 0.1) : 10 / (prog + 0.25);
+      else if (it.type === "red" && it.line > lo && it.line < hi && prog < 0.35) s -= 40;
+    }
+    if (s > bestS) { bestS = s; best = L; }
+  }
+  if (Math.random() < err) best = clamp(p.line + (Math.random() < 0.5 ? -1 : 1), 0, p.lines - 1);
+  if (best !== p.line) p.line += Math.sign(best - p.line);
+}
+
+function say(p, text) { p.emote = { text, t: 2 }; }
+
+// ---------- partida ----------
+let state = "menu", me = null, op = null, timeLeft = 0, countT = 0, online = false, diff = "normal";
+let rival = null, seed = 0, ping = 60, pingT = 0, lastSeed = 0;
+const $ = id => document.getElementById(id);
+const screens = ["sMenu", "sSearch", "sFound", "sEnd"];
+function show(id) { for (const s of screens) $(s).hidden = s !== id; $("emotes").hidden = !(state === "play" || state === "count"); $("mute").hidden = !$("emotes").hidden; }
+
+function refreshTrophy() { $("trophy").textContent = `🏆 ${trophies} · ${league(trophies)}`; }
+
+function startMatch() {
+  seed = Math.floor(Math.random() * 90000) + 10000;
+  const d = online ? (trophies >= 220 ? "dificil" : Math.random() < 0.6 ? "normal" : "dificil") : diff;
+  me = newPlayer("Tú", seed, null);
+  op = newPlayer(rival.name, seed, { ...DIFFS[d], next: 0.3 });
+  timeLeft = MATCH_TIME; countT = 3.2; state = "count"; show(null);
+}
+
+function findRival() {
+  if (online) {
+    const [n, c] = RIVALS[Math.floor(Math.random() * RIVALS.length)];
+    rival = { name: n, sub: `${c} · 🏆 ${Math.max(0, trophies + Math.floor(Math.random() * 60 - 30))}` };
+    ping = 40 + Math.floor(Math.random() * 70);
+  } else {
+    rival = { name: "ORB-" + DIFFS[diff].label.toUpperCase(), sub: "Máquina · " + DIFFS[diff].label };
+  }
+}
+
+let searchTimer = null;
+function goSearch() {
+  online = true; state = "search"; show("sSearch");
+  const wait = 2 + Math.random() * 2.5; let t = 0;
+  clearInterval(searchTimer);
+  searchTimer = setInterval(() => {
+    t += 0.25;
+    $("searchTime").textContent = `0:${String(Math.floor(t)).padStart(2, "0")} · Región Sudamérica`;
+    if (t >= wait) { clearInterval(searchTimer); findRival(); goFound("¡RIVAL ENCONTRADO!"); }
+  }, 250);
+}
+function goFound(title) {
+  state = "found"; show("sFound");
+  $("foundTitle").textContent = title;
+  $("vsMe").textContent = online ? `🏆 ${trophies}` : "Práctica";
+  $("vsName").textContent = rival.name; $("vsOp").textContent = rival.sub + (online ? ` · ${ping} ms` : "");
+  $("vsSeed").textContent = "Semilla compartida: los mismos orbes y rojos para los dos";
+  setTimeout(() => { if (state === "found") startMatch(); }, 1900);
+}
+
+function endMatch() {
+  state = "end";
+  let res, reason;
+  if (me.ko && !op.ko) { res = -1; reason = "K.O.: TE QUEDASTE SIN VIDAS"; }
+  else if (op.ko && !me.ko) { res = 1; reason = `K.O.: ${op.name.toUpperCase()} SIN VIDAS`; }
+  else { res = Math.sign(me.score - op.score); reason = me.ko ? "DOBLE K.O." : "SE ACABÓ EL TIEMPO"; }
+  $("endReason").textContent = reason;
+  $("endTitle").textContent = res > 0 ? "VICTORIA" : res < 0 ? "DERROTA" : "EMPATE";
+  $("endTitle").style.textShadow = res > 0 ? "0 0 18px #3ef0ff, 0 0 42px #3ef0ff66" : res < 0 ? "0 0 18px #ff3b5c, 0 0 42px #ff3b5c66" : "0 0 18px #ffd23f";
+  let delta = 0;
+  if (online) { delta = res > 0 ? 25 : res < 0 ? -15 : 5; trophies = Math.max(0, trophies + delta); saveTrophies(); refreshTrophy(); }
+  $("endDelta").textContent = online ? `${delta >= 0 ? "+" : ""}${delta} 🏆 · ${trophies}` : "Práctica: sin trofeos";
+  $("endDelta").style.color = delta > 0 ? "var(--gold)" : delta < 0 ? "var(--red)" : "var(--muted)";
+  $("endOpName").textContent = op.name;
+  const rows = [["Puntos", me.score, op.score], ["Mejor combo", "x" + me.best, "x" + op.best], ["Orbes", me.orbs, op.orbs], ["Ataques enviados", me.sent, op.sent], ["Vidas", me.lives, op.lives]];
+  $("endBody").innerHTML = rows.map(r => `<tr><th>${r[0]}</th><td class="c1">${r[1]}</td><td class="c2">${r[2]}</td></tr>`).join("");
+  beep(res > 0 ? 990 : 200, 0.4, "triangle", 0.08);
+  show("sEnd");
+}
+
+// ---------- dibujo ----------
+const cv = $("cv"), ctx = cv.getContext("2d");
+let W = 0, H = 0, DPR = 1;
+const stars = Array.from({ length: 70 }, (_, i) => { const r = mulberry32(i * 99 + 7); return [r(), r(), r() * 1.4 + 0.3, r()]; });
+function resize() {
+  const r = cv.getBoundingClientRect(); DPR = Math.min(2, window.devicePixelRatio || 1);
+  W = r.width; H = r.height; cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+}
+new ResizeObserver(resize).observe(cv); resize();
+
+function font(px, display) { return `${display ? "" : "700 "}${px}px ${display ? '"Audiowide", "Arial Black", sans-serif' : '"Chakra Petch", "Segoe UI", sans-serif'}`; }
+function glowText(t, x, y, px, col, align = "center", display = true, blur = 12) {
+  ctx.font = font(px, display); ctx.textAlign = align; ctx.textBaseline = "middle";
+  ctx.shadowColor = col; ctx.shadowBlur = blur; ctx.fillStyle = col; ctx.fillText(t, x, y);
+  ctx.shadowBlur = 0; ctx.fillStyle = "#fff"; ctx.globalAlpha *= 0.85; ctx.fillText(t, x, y); ctx.globalAlpha = 1;
+}
+function heart(x, y, s, col) {
+  ctx.fillStyle = col; ctx.beginPath();
+  ctx.moveTo(x, y + s * 0.35);
+  ctx.bezierCurveTo(x - s * 0.9, y - s * 0.3, x - s * 0.4, y - s * 0.95, x, y - s * 0.35);
+  ctx.bezierCurveTo(x + s * 0.4, y - s * 0.95, x + s * 0.9, y - s * 0.3, x, y + s * 0.35);
+  ctx.fill();
+}
+
+function drawPanel(p, X, Y, PW, PH, o) {
+  const now = performance.now() / 1000;
+  ctx.save(); ctx.beginPath(); ctx.rect(X, Y, PW, PH); ctx.clip();
+  const g = ctx.createLinearGradient(0, Y, 0, Y + PH);
+  g.addColorStop(0, o.top ? "#120a2a" : "#06122a"); g.addColorStop(1, o.top ? "#07051a" : "#030817");
+  ctx.fillStyle = g; ctx.fillRect(X, Y, PW, PH);
+  for (const s of stars) { ctx.globalAlpha = 0.25 + 0.5 * Math.abs(Math.sin(now * 0.7 + s[3] * 9)); ctx.fillStyle = "#cfe0ff"; ctx.fillRect(X + s[0] * PW, Y + s[1] * PH, s[2], s[2]); }
+  ctx.globalAlpha = 1;
+
+  const sh = p.shake * 7;
+  const S = Math.min(PW, PH * (o.top ? 0.95 : 0.9)) * 0.42;
+  const cx = X + PW / 2 + (Math.random() - 0.5) * sh, cy = Y + PH * (o.top ? 0.54 : 0.5) + (Math.random() - 0.5) * sh;
+  const P = (a, r) => [cx + Math.cos(a) * r * S, cy + Math.sin(a) * r * S];
+  const accent = o.top ? "#b77bff" : "#3ef0ff";
+
+  // sol
+  const sg = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.25);
+  sg.addColorStop(0, "#fff6d0"); sg.addColorStop(0.35, "#ffb84a"); sg.addColorStop(1, "#ff6a0000");
+  ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(cx, cy, S * 0.25, 0, TAU); ctx.fill();
+
+  // órbitas
+  const fever = p.combo >= 15, warnRev = p.incoming && p.incoming.type === "reversa" && Math.floor(now * 8) % 2 === 0;
+  for (let l = 0; l < p.lines; l++) {
+    ctx.strokeStyle = warnRev ? "#ffd23f" : fever ? "#ff9b3f" : accent;
+    ctx.globalAlpha = p.flash > 0 ? 1 : 0.55; ctx.lineWidth = o.top ? 1.5 : 2;
+    ctx.shadowColor = ctx.strokeStyle; ctx.shadowBlur = 10;
+    ctx.beginPath(); ctx.arc(cx, cy, radFrac(l) * S, 0, TAU); ctx.stroke();
+  }
+  ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+
+  // objetos
+  for (const it of p.items) {
+    const [x, y] = P(it.a, radFrac(it.line)), k = Math.min(1, it.age / 0.2), rr = S * 0.055 * k;
+    if (it.type === "orb") {
+      ctx.strokeStyle = "#ffd23f"; ctx.lineWidth = Math.max(2, S * 0.022); ctx.shadowColor = "#ffd23f"; ctx.shadowBlur = 12;
+      ctx.beginPath(); ctx.arc(x, y, rr, 0, TAU); ctx.stroke();
+    } else {
+      ctx.fillStyle = "#ff3b5c"; ctx.shadowColor = "#ff3b5c"; ctx.shadowBlur = 16;
+      ctx.beginPath(); ctx.arc(x, y, rr * 1.05, 0, TAU); ctx.fill();
+    }
+  }
+  ctx.shadowBlur = 0;
+
+  // fantasma del rival (solo en tu panel)
+  if (o.ghost && !o.ghost.ko) {
+    const [gx, gy] = P(o.ghost.a, radFrac(o.ghost.lineVis));
+    ctx.globalAlpha = 0.5; ctx.strokeStyle = "#b77bff"; ctx.lineWidth = 2; ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.arc(gx, gy, S * 0.065, 0, TAU); ctx.stroke(); ctx.setLineDash([]);
+    ctx.globalAlpha = 0.6; glowText(o.ghost.name, gx, gy - S * 0.13, Math.max(10, S * 0.06), "#b77bff", "center", false, 4);
+    ctx.globalAlpha = 1;
+  }
+
+  // estela y bolita
+  const br = radFrac(p.lineVis);
+  for (let i = 0; i < p.trail.length; i++) {
+    const [tx, ty] = p.trail[i]; ctx.globalAlpha = (i / p.trail.length) * 0.35;
+    ctx.fillStyle = accent; ctx.beginPath(); ctx.arc(cx + tx * S, cy + ty * S, S * 0.05 * (i / p.trail.length), 0, TAU); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  if (!p.ko && !(p.inv > 0 && Math.floor(now * 12) % 2 === 0)) {
+    const [bx, by] = P(p.a, br);
+    ctx.fillStyle = "#fff"; ctx.shadowColor = accent; ctx.shadowBlur = 18;
+    ctx.beginPath(); ctx.arc(bx, by, S * 0.06, 0, TAU); ctx.fill(); ctx.shadowBlur = 0;
+  }
+  for (const q of p.parts) { ctx.globalAlpha = clamp(q.life * 2, 0, 1); ctx.fillStyle = q.col; ctx.beginPath(); ctx.arc(cx + q.x * S, cy + q.y * S, S * 0.018, 0, TAU); ctx.fill(); }
+  ctx.globalAlpha = 1;
+
+  // apagón
+  if (p.dark > 0) {
+    const [bx, by] = P(p.a, br), fade = Math.min(1, p.dark / 0.4, (3.5 - p.dark) / 0.2 + 0.2);
+    const dg = ctx.createRadialGradient(bx, by, S * 0.18, bx, by, S * 0.42);
+    dg.addColorStop(0, "rgba(0,0,0,0)"); dg.addColorStop(1, `rgba(2,2,8,${0.96 * fade})`);
+    ctx.fillStyle = dg; ctx.fillRect(X, Y, PW, PH);
+  }
+  if (p.hitFlash > 0) { ctx.fillStyle = `rgba(255,59,92,${p.hitFlash * 0.25})`; ctx.fillRect(X, Y, PW, PH); }
+
+  // HUD del panel
+  const fs = o.top ? 13 : 15, pad = 12;
+  ctx.globalAlpha = 1;
+  glowText(String(p.score), X + pad, Y + pad + (o.top ? 18 : 14), o.top ? 22 : 30, "#fff", "left", true, 8);
+  if (p.combo > 1) glowText(`COMBO x${p.combo}${fever ? " · FIEBRE" : ""}`, X + pad, Y + pad + (o.top ? 40 : 42), fs - 1, fever ? "#ff9b3f" : "#ffd23f", "left", false, 6);
+  for (let i = 0; i < LIVES; i++) heart(X + PW - pad - 10 - i * (fs + 6), Y + pad + (o.top ? 18 : 14), fs * 0.75, i < p.lives ? "#ff3b5c" : "#2a2f55");
+  if (o.top) {
+    ctx.fillStyle = "#ff3b5c"; ctx.globalAlpha = 0.6 + 0.4 * Math.sin(now * 5);
+    ctx.beginPath(); ctx.arc(X + PW / 2 - 52, Y + pad + 18, 4, 0, TAU); ctx.fill(); ctx.globalAlpha = 1;
+    glowText(`EN VIVO · ${p.name}`, X + PW / 2 - 43, Y + pad + 18, 12, "#e9ecff", "left", false, 0);
+    if (online) glowText(`${ping} ms`, X + PW - pad, Y + pad + 40, 11, ping < 80 ? "#4dffa6" : "#ffd23f", "right", false, 0);
+  }
+  // barra de ataque
+  const bw = PW * 0.42, bh = 6, bxx = X + PW / 2 - bw / 2, byy = o.top ? Y + PH - 14 : Y + PH - 56;
+  ctx.fillStyle = "#ffffff18"; ctx.fillRect(bxx, byy, bw, bh);
+  ctx.fillStyle = accent; ctx.shadowColor = accent; ctx.shadowBlur = 8; ctx.fillRect(bxx, byy, bw * p.energy / ENERGY_MAX, bh); ctx.shadowBlur = 0;
+  ctx.globalAlpha = 0.7; glowText("ATAQUE", bxx - 8, byy + 3, 10, "#8b93c9", "right", false, 0); ctx.globalAlpha = 1;
+
+  // avisos
+  if (p.incoming && Math.floor(now * 6) % 2 === 0) {
+    const a = ATTACKS[p.incoming.type];
+    glowText(`¡${a.name} EN CAMINO!`, X + PW / 2, Y + PH * 0.5, o.top ? 16 : 24, a.col, "center", true, 16);
+  }
+  if (p.banner) { ctx.globalAlpha = Math.min(1, p.banner.t * 2); glowText(p.banner.text, X + PW / 2, Y + PH * (o.top ? 0.82 : 0.2), o.top ? 14 : 20, p.banner.col, "center", true, 14); ctx.globalAlpha = 1; }
+  if (p.emote) {
+    const ex = X + PW / 2, ey = Y + (o.top ? PH * 0.3 : PH * 0.3);
+    ctx.globalAlpha = Math.min(1, p.emote.t * 2);
+    ctx.font = font(18, false); const tw = ctx.measureText(p.emote.text).width + 24;
+    ctx.fillStyle = "#0b0e22e6"; ctx.strokeStyle = accent; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.roundRect(ex - tw / 2, ey - 17, tw, 34, 17); ctx.fill(); ctx.stroke();
+    glowText(p.emote.text, ex, ey + 1, 18, "#fff", "center", false, 0); ctx.globalAlpha = 1;
+  }
+  if (p.ko) { ctx.fillStyle = "#000a"; ctx.fillRect(X, Y, PW, PH); glowText("K.O.", X + PW / 2, Y + PH / 2, o.top ? 36 : 52, "#ff3b5c", "center", true, 20); }
+  ctx.restore();
+}
+
+function drawStrip(Y, SH) {
+  ctx.fillStyle = "#070917"; ctx.fillRect(0, Y, W, SH);
+  ctx.fillStyle = "#1c2250"; ctx.fillRect(0, Y, W, 1); ctx.fillRect(0, Y + SH - 1, W, 1);
+  const total = Math.max(1, me.score + op.score), share = (me.score + 1) / (total + 2);
+  const by = Y + SH - 9, bw = W - 24;
+  ctx.fillStyle = "#b77bff"; ctx.fillRect(12, by, bw, 4);
+  ctx.fillStyle = "#3ef0ff"; ctx.shadowColor = "#3ef0ff"; ctx.shadowBlur = 8; ctx.fillRect(12, by, bw * share, 4); ctx.shadowBlur = 0;
+  const tl = Math.max(0, Math.ceil(timeLeft)), tt = `${Math.floor(tl / 60)}:${String(tl % 60).padStart(2, "0")}`;
+  glowText(tt, W / 2, Y + SH * 0.42, Math.min(26, SH * 0.48), tl <= 10 ? "#ff3b5c" : "#ffd23f", "center", true, 12);
+  const lead = me.score - op.score;
+  glowText(`TÚ ${me.score}`, 14, Y + SH * 0.42, 14, "#3ef0ff", "left", false, 6);
+  glowText(`${op.score} ${op.name.length > 10 ? op.name.slice(0, 9) + "…" : op.name}`, W - 14, Y + SH * 0.42, 14, "#b77bff", "right", false, 6);
+  if (lead !== 0 && state === "play") { ctx.globalAlpha = 0.8; glowText(lead > 0 ? `+${lead}` : `${lead}`, W / 2, Y + SH * 0.78 - 4, 10, lead > 0 ? "#3ef0ff" : "#b77bff", "center", false, 0); ctx.globalAlpha = 1; }
+}
+
+function drawIdle() {
+  const now = performance.now() / 1000, g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, "#0b0820"); g.addColorStop(1, "#030817"); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  for (const s of stars) { ctx.globalAlpha = 0.3 + 0.5 * Math.abs(Math.sin(now * 0.6 + s[3] * 9)); ctx.fillStyle = "#cfe0ff"; ctx.fillRect(s[0] * W, s[1] * H, s[2], s[2]); }
+  ctx.globalAlpha = 0.25;
+  for (let l = 0; l < 3; l++) { ctx.strokeStyle = l % 2 ? "#b77bff" : "#3ef0ff"; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(W / 2, H * 0.5, W * (0.2 + l * 0.12), 0, TAU); ctx.stroke(); }
+  ctx.globalAlpha = 1;
+}
+
+let last = performance.now();
+function frame(t) {
+  const dt = Math.min(0.05, (t - last) / 1000); last = t;
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  if (state === "count" || state === "play" || state === "ending" || (state === "end" && me)) {
+    if (state === "count") { countT -= dt; if (countT <= 0) { state = "play"; beep(990, 0.15, "square", 0.06); } else if (Math.ceil(countT) !== Math.ceil(countT + dt)) beep(520, 0.1, "square", 0.05); }
+    if (state === "play") {
+      step(me, dt, op, true); step(op, dt, me, false);
+      timeLeft -= dt;
+      if ((pingT -= dt) <= 0) { pingT = 1; if (online) ping = clamp(ping + Math.round(Math.random() * 16 - 8), 28, 140); }
+      if (op.bot && !op.emote && Math.random() < dt * 0.02) say(op, ["🔥", "😎", "¡Vamos!"][Math.floor(Math.random() * 3)]);
+      if (timeLeft <= 0 || me.ko || op.ko) { if (me.ko && !op.ko && op.bot) say(op, "¡GG!"); timeLeft = Math.max(0, timeLeft); setTimeout(endMatch, 900); state = "ending"; }
+    }
+    if (state === "ending") { step(me, dt * 0.3, op, false); step(op, dt * 0.3, me, false); }
+    const topH = H * 0.39, stripH = H * 0.075;
+    drawPanel(op, 0, 0, W, topH, { top: true });
+    drawStrip(topH, stripH);
+    drawPanel(me, 0, topH + stripH, W, H - topH - stripH, { top: false, ghost: op });
+    if (state === "count") {
+      ctx.fillStyle = "#04050d88"; ctx.fillRect(0, 0, W, H);
+      const n = Math.ceil(countT);
+      glowText(n > 3 ? "3" : String(n), W / 2, H * 0.62, 90, "#ffd23f", "center", true, 24);
+      glowText("MISMA SEMILLA · 90 s · 3 VIDAS", W / 2, H * 0.72, 13, "#e9ecff", "center", false, 0);
+    }
+  } else drawIdle();
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+// ---------- entrada ----------
+function move(d) { if (state !== "play" || !me || me.ko) return; const n = clamp(me.line + d, 0, me.lines - 1); if (n !== me.line) { me.line = n; beep(420 + n * 80, 0.04, "sine", 0.03); } }
+cv.addEventListener("pointerdown", e => { e.preventDefault(); const r = cv.getBoundingClientRect(); move(e.clientX - r.left < r.width / 2 ? -1 : 1); });
+window.addEventListener("keydown", e => {
+  if (["ArrowLeft", "a", "A"].includes(e.key)) { move(-1); e.preventDefault(); }
+  if (["ArrowRight", "d", "D"].includes(e.key)) { move(1); e.preventDefault(); }
+});
+
+$("bOnline").onclick = () => { beep(700, 0.06); goSearch(); };
+$("bBot").onclick = () => { beep(700, 0.06); online = false; findRival(); goFound("PRÁCTICA CONTRA LA MÁQUINA"); };
+$("bCancel").onclick = () => { clearInterval(searchTimer); state = "menu"; show("sMenu"); };
+$("bAgain").onclick = () => { if (online) goSearch(); else { findRival(); goFound("REVANCHA"); } };
+$("bMenu").onclick = () => { state = "menu"; me = null; show("sMenu"); };
+document.querySelectorAll(".chip[data-d]").forEach(b => b.onclick = () => {
+  diff = b.dataset.d; document.querySelectorAll(".chip[data-d]").forEach(c => c.setAttribute("aria-pressed", String(c === b)));
+});
+document.querySelectorAll(".emote").forEach(b => b.addEventListener("pointerdown", e => {
+  e.stopPropagation(); e.preventDefault();
+  if (!me) return; say(me, b.dataset.e); beep(1200, 0.05);
+  if (op.bot && Math.random() < 0.5) setTimeout(() => op && say(op, ["¡GG!", "😎", "🔥", "Ja ja"][Math.floor(Math.random() * 4)]), 900 + Math.random() * 900);
+}));
+$("mute").onclick = () => { soundOn = !soundOn; $("mute").textContent = "Sonido: " + (soundOn ? "sí" : "no"); $("mute").setAttribute("aria-pressed", String(!soundOn)); };
+refreshTrophy();
+})();
+</script>
+</body>
+</html>

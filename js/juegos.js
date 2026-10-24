@@ -64,8 +64,45 @@ const JUEGOS = [
 
 // Noticias del estudio (la más nueva arriba). Para añadir una, copia una línea.
 const NOTICIAS = [
+  { fecha: "2026-10-24", texto: "Nueva sección de prototipos: prueba el Duelo online de Orbit King en el navegador y dinos qué te parece." },
   { fecha: "2026-10-24", texto: "Orbit King 0.8.1 ya está en la prueba cerrada de Google Play: modos Aventura y Escape, 50 niveles en 3 mundos y corredor en 3D." },
   { fecha: "2026-10-23", texto: "Orbit Dash ahora se llama Orbit King: llegan 2 mundos nuevos, retos diarios y estelas." },
   { fecha: "2026-10-22", texto: "El juego entra en prueba cerrada en Google Play." },
   { fecha: "2026-10-21", texto: "Versión 0.6.0: orbes de velocidad, nuevas formas y música en los niveles." },
 ];
+
+// ============================================================
+//  PROTOTIPOS — ideas jugables para que la gente las pruebe y opine
+//  Cada uno tiene su página: prototipo.html?id=<id>
+//  url: el HTML del prototipo dentro de prototipos/<id>/
+// ============================================================
+const PROTOTIPOS = [
+  {
+    id: "duelo",
+    nombre: "Duelo online",
+    juego: "Orbit King",
+    fecha: "2026-10-24",
+    color: "#b77bff",
+    url: "prototipos/duelo/index.html",
+    lema: "Pantalla dividida contra otro jugador: arriba ves a tu rival en vivo y abajo juegas tú, con los mismos orbes y rojos para los dos.",
+    descripcion: [
+      "Es una idea para un modo online de Orbit King. Los dos jugáis la misma partida (misma semilla) durante 90 segundos y con 3 vidas. Gana quien tenga más puntos o quien deje al otro sin vidas.",
+      "Cada orbe llena tu barra de ataque. Al llenarse le lanza al rival un MURO de rojos, una REVERSA del sentido de giro o un APAGÓN, con un segundo de aviso.",
+    ],
+    probar: [
+      "Juega contra la máquina en Fácil, Normal y Difícil.",
+      "Prueba \"Rival al azar\" (en este prototipo el rival está simulado).",
+      "Fíjate en el fantasma violeta: marca por dónde va tu rival.",
+      "Dinos si los ataques te parecen justos o demasiado fuertes.",
+    ],
+    controles: "Toca la mitad izquierda para ir hacia dentro y la derecha hacia fuera. En el PC: flechas ← → o A y D.",
+  },
+];
+
+// Estrellas y comentarios de los prototipos (Firebase, plan gratuito).
+// Mientras projectId esté vacío, la web dice que los comentarios llegan pronto.
+// Cómo crear el proyecto y qué reglas poner: web/LEEME.md
+const FIREBASE = {
+  projectId: "",
+  apiKey: "",
+};
