@@ -103,6 +103,6 @@ const PROTOTIPOS = [
 // Mientras projectId esté vacío, la web dice que los comentarios llegan pronto.
 // Cómo crear el proyecto y qué reglas poner: web/LEEME.md
 const FIREBASE = {
-  projectId: "",
-  apiKey: "",
+  projectId: "tecnodiagmargames-web",
+  apiKey: "AIzaSyAXVAHSE4pcZKRBHNzzkat5-t3KRIh5rTA",   // pública por diseño: lo que protege los datos son las reglas
 };
