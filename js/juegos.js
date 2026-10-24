@@ -8,7 +8,7 @@
 //           "desarrollo"  -> "En desarrollo"
 //           "secreto"     -> tarjeta misteriosa (sin detalles)
 //
-//  Cuando Orbit Dash esté publicado: pon estado: "disponible" y
+//  Cuando Orbit King esté publicado: pon estado: "disponible" y
 //  playUrl: "https://play.google.com/store/apps/details?id=com.tecnodiagmar.orbitdash"
 // ============================================================
 
@@ -19,36 +19,38 @@ const ESTUDIO = {
 
 const JUEGOS = [
   {
-    id: "orbit-dash",
-    nombre: "Orbit Dash",
+    id: "orbit-dash",   // se mantiene para no romper enlaces viejos (juego.html?id=orbit-dash)
+    nombre: "Orbit King",
     lema: "Salta entre órbitas, esquiva rojos y atrapa orbes en un reto de reflejos neón.",
     estado: "prueba",
     playUrl: "",
     plataforma: "Android",
     genero: "Arcade · Reflejos",
     color: "#22e5ff",
-    icono: "img/orbit-dash/icono.png",
-    portada: "img/orbit-dash/portada.png",
+    icono: "img/orbit-king/icono.png",
+    portada: "img/orbit-king/portada.png",
     privacidad: "https://proelmas601.github.io/orbit-dash-privacy/",
     descripcion: [
       "Tu bolita gira sin parar alrededor de un planeta: toca para saltar de órbita, atrapa los orbes amarillos y esquiva los rojos. Fácil de aprender, difícil de dominar.",
-      "Se juega con una mano, sin conexión y en partidas cortas de 2 a 5 minutos.",
+      "Se juega con una mano, sin conexión y en partidas cortas. La calidad gráfica se ajusta sola a tu teléfono.",
     ],
     caracteristicas: [
-      { titulo: "Modo Loco", texto: "Las órbitas se desenrollan en carriles y todo empieza a caer: terremotos, lluvias de rojos, láseres… y el MODO EXTREMO." },
-      { titulo: "Líneas dinámicas", texto: "Los orbes azules añaden líneas y los verdes las quitan. Nunca sabes cuántas habrá." },
-      { titulo: "Infinito", texto: "Viaja de galaxia en galaxia, cada una con sus reglas, sus colores y su dificultad." },
-      { titulo: "20 niveles", texto: "Cada uno con su temática, el corredor horizontal, la reversa y la vista 3D de frente." },
-      { titulo: "Personaliza", texto: "Colores, formas (nave, cohete, platillo…), estallidos al chocar, fondos y música." },
-      { titulo: "Logros y regalos", texto: "Más de 50 logros, regalos diarios, cofres, escudo, imán, cámara lenta y el orbe arcoíris." },
+      { titulo: "Aventura", texto: "Viaja de galaxia en galaxia: las órbitas cambian, se desenrollan en carriles y aparecen líneas nuevas. Elige Normal o Extremo." },
+      { titulo: "Escape", texto: "El sol crece sin parar y quema las órbitas. Atrapa orbes azules para abrir líneas por fuera y huye de estrella en estrella." },
+      { titulo: "3 mundos, 50 niveles", texto: "Galaxia de origen, Infierno y Núcleo volcánico, cada nivel con su temática, su canción y un premio al superarlo." },
+      { titulo: "Corredor en 3D", texto: "Las órbitas se estiran en una pista que corre hacia ti: salta los rojos, pasa por debajo de los arcos y cambia de línea." },
+      { titulo: "Personaliza", texto: "Colores, formas, estelas, órbitas, estallidos al chocar, entradas de cine, fondos y música." },
+      { titulo: "Premios y retos", texto: "Retos diarios, ruleta, más de 50 logros, cofres, diamantes y boosters como imán x2 o doble monedas." },
     ],
     capturas: [
-      { src: "img/orbit-dash/captura_1_menu.png", texto: "Menú principal" },
-      { src: "img/orbit-dash/captura_2_infinito.png", texto: "Modo Infinito" },
-      { src: "img/orbit-dash/captura_3_modo_loco.png", texto: "Modo Loco" },
-      { src: "img/orbit-dash/captura_4_corredor_3d.png", texto: "Corredor en 3D" },
-      { src: "img/orbit-dash/captura_5_tienda.png", texto: "Tienda" },
-      { src: "img/orbit-dash/captura_6_niveles.png", texto: "Niveles" },
+      { src: "img/orbit-king/captura_1_corredor_3d.jpg", texto: "Corredor en 3D" },
+      { src: "img/orbit-king/captura_2_aventura.jpg", texto: "Aventura" },
+      { src: "img/orbit-king/captura_3_escape.jpg", texto: "Modo Escape" },
+      { src: "img/orbit-king/captura_4_niveles.jpg", texto: "50 niveles" },
+      { src: "img/orbit-king/captura_5_premios.jpg", texto: "Premios y cofres" },
+      { src: "img/orbit-king/captura_6_personaliza.jpg", texto: "Tienda" },
+      { src: "img/orbit-king/captura_7_entradas.jpg", texto: "Entradas de cine" },
+      { src: "img/orbit-king/captura_8_reflejos.jpg", texto: "Reflejos neón" },
     ],
   },
   {
@@ -62,6 +64,8 @@ const JUEGOS = [
 
 // Noticias del estudio (la más nueva arriba). Para añadir una, copia una línea.
 const NOTICIAS = [
-  { fecha: "2026-10-22", texto: "Orbit Dash entra en prueba cerrada en Google Play." },
-  { fecha: "2026-10-21", texto: "Orbit Dash 0.6.0: orbes de velocidad, nuevas formas y música en los niveles." },
+  { fecha: "2026-10-24", texto: "Orbit King 0.8.1 ya está en la prueba cerrada de Google Play: modos Aventura y Escape, 50 niveles en 3 mundos y corredor en 3D." },
+  { fecha: "2026-10-23", texto: "Orbit Dash ahora se llama Orbit King: llegan 2 mundos nuevos, retos diarios y estelas." },
+  { fecha: "2026-10-22", texto: "El juego entra en prueba cerrada en Google Play." },
+  { fecha: "2026-10-21", texto: "Versión 0.6.0: orbes de velocidad, nuevas formas y música en los niveles." },
 ];
