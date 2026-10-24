@@ -53,9 +53,11 @@ body {
   border-radius: 28px; overflow: hidden;
   background: #000;
   box-shadow: 0 0 0 2px #1d2352, 0 0 0 9px #0a0c1d, 0 0 0 10px #262d63, 0 30px 80px #000c, 0 0 90px #3ef0ff22;
-  user-select: none; -webkit-user-select: none; touch-action: none;
+  user-select: none; -webkit-user-select: none; touch-action: manipulation;
 }
 canvas { display: block; width: 100%; height: 100%; }
+/* Solo durante la partida se bloquea el deslizamiento; en los menús la página se puede desplazar */
+.phone.jugando { touch-action: none; }
 .screen {
   position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 14px; padding: 24px 22px; text-align: center;
@@ -437,7 +439,7 @@ let state = "menu", me = null, op = null, timeLeft = 0, countT = 0, online = fal
 let rival = null, seed = 0, ping = 60, pingT = 0, lastSeed = 0;
 const $ = id => document.getElementById(id);
 const screens = ["sMenu", "sSearch", "sFound", "sEnd"];
-function show(id) { for (const s of screens) $(s).hidden = s !== id; $("emotes").hidden = !(state === "play" || state === "count"); $("mute").hidden = !$("emotes").hidden; }
+function show(id) { for (const s of screens) $(s).hidden = s !== id; $("emotes").hidden = !(state === "play" || state === "count"); $("mute").hidden = !$("emotes").hidden; $("phone").classList.toggle("jugando", !$("emotes").hidden); }
 
 function refreshTrophy() { $("trophy").textContent = `🏆 ${trophies} · ${league(trophies)}`; }
 

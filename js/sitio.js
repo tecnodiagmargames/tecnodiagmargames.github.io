@@ -177,6 +177,7 @@ function pintarPrototipo() {
   }
   document.title = `${p.nombre} · Prototipo · ${ESTUDIO.nombre}`;
   zona.style.setProperty("--c", p.color);
+  const tactil = matchMedia("(pointer: coarse)").matches;
   zona.innerHTML = `
     <section class="contenedor proto-cabecera">
       <span class="estado estado-desarrollo">Prototipo · ${esc(p.juego)}</span>
@@ -187,8 +188,15 @@ function pintarPrototipo() {
 
     <section class="contenedor proto-rejilla">
       <div class="proto-pantalla">
-        <iframe src="${esc(p.url)}" title="Prototipo jugable: ${esc(p.nombre)}" allow="autoplay; fullscreen"></iframe>
-        <a class="enlace" href="${esc(p.url)}" target="_blank" rel="noopener">Abrir a pantalla completa ↗</a>
+        ${tactil
+          // En móviles el juego incrustado se come los toques y la página no se desplaza: se abre aparte
+          ? `<a class="proto-mini proto-poster" href="${esc(p.url)}">
+              <span class="pm-arriba"><i></i></span><span class="pm-vs">VS</span><span class="pm-abajo"><i></i></span>
+              <b class="poster-boton">▶ JUGAR</b>
+            </a>
+            <p class="poster-nota">Se abre a pantalla completa. Vuelve con el botón Atrás para opinar.</p>`
+          : `<iframe src="${esc(p.url)}" title="Prototipo jugable: ${esc(p.nombre)}" allow="autoplay; fullscreen"></iframe>
+            <a class="enlace" href="${esc(p.url)}" target="_blank" rel="noopener">Abrir a pantalla completa ↗</a>`}
       </div>
       <div class="proto-info">
         ${p.descripcion.map((t) => `<p>${esc(t)}</p>`).join("")}
