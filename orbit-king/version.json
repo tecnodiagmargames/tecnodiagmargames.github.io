@@ -1,10 +1,10 @@
 {
-  "version": "0.8.1",
-  "code": 9,
+  "version": "0.9.0",
+  "code": 10,
   "notes": [
-    "¡Ahora se llama Orbit King!",
-    "Modos Aventura y Escape, 50 niveles en 3 mundos",
-    "Corredor en 3D, diamantes, cofres y ruleta diaria",
-    "La calidad gráfica se ajusta sola a tu teléfono"
+    "Mundos nuevos: Novatos e Imposible",
+    "3 estrellas por nivel y túnel 3D",
+    "Boosters grandes al empezar cada partida",
+    "Retos de la semana y del mes"
   ]
 }
