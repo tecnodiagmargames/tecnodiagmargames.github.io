@@ -37,7 +37,7 @@ const JUEGOS = [
     caracteristicas: [
       { titulo: "Aventura", texto: "Viaja de galaxia en galaxia: las órbitas cambian, se desenrollan en carriles y aparecen líneas nuevas. Elige Normal o Extremo." },
       { titulo: "Escape", texto: "El sol crece sin parar y quema las órbitas. Atrapa orbes azules para abrir líneas por fuera y huye de estrella en estrella." },
-      { titulo: "3 mundos, 50 niveles", texto: "Galaxia de origen, Infierno y Núcleo volcánico, cada nivel con su temática, su canción y un premio al superarlo." },
+      { titulo: "5 mundos, 73 niveles", texto: "Novatos, Galaxia de origen, Infierno, Núcleo volcánico e Imposible, cada nivel con su temática, su canción y un premio al superarlo." },
       { titulo: "Corredor en 3D", texto: "Las órbitas se estiran en una pista que corre hacia ti: salta los rojos, pasa por debajo de los arcos y cambia de línea." },
       { titulo: "Personaliza", texto: "Colores, formas, estelas, órbitas, estallidos al chocar, entradas de cine, fondos y música." },
       { titulo: "Premios y retos", texto: "Retos diarios, ruleta, más de 50 logros, cofres, diamantes y boosters como imán x2 o doble monedas." },
@@ -46,7 +46,7 @@ const JUEGOS = [
       { src: "img/orbit-king/captura_1_corredor_3d.jpg", texto: "Corredor en 3D" },
       { src: "img/orbit-king/captura_2_aventura.jpg", texto: "Aventura" },
       { src: "img/orbit-king/captura_3_escape.jpg", texto: "Modo Escape" },
-      { src: "img/orbit-king/captura_4_niveles.jpg", texto: "50 niveles" },
+      { src: "img/orbit-king/captura_4_niveles.jpg", texto: "73 niveles" },
       { src: "img/orbit-king/captura_5_premios.jpg", texto: "Premios y cofres" },
       { src: "img/orbit-king/captura_6_personaliza.jpg", texto: "Tienda" },
       { src: "img/orbit-king/captura_7_entradas.jpg", texto: "Entradas de cine" },
