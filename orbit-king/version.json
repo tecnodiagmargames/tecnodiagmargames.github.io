@@ -1,10 +1,12 @@
 {
-  "version": "0.9.0",
-  "code": 10,
+  "version": "0.10.0",
+  "code": 11,
   "notes": [
-    "Mundos nuevos: Novatos e Imposible",
-    "3 estrellas por nivel y túnel 3D",
-    "Boosters grandes al empezar cada partida",
-    "Retos de la semana y del mes"
+    "¡DUELO online contra jugadores reales!",
+    "Mundos nuevos: Glaciar, Abismo, Dunas y Carrera",
+    "Galaxias temáticas en Aventura",
+    "Tienda renovada con cofres nuevos",
+    "Premios al completar cada mundo",
+    "Mejoras y arreglos"
   ]
 }
