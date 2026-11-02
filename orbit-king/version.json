@@ -1,12 +1,12 @@
 {
-  "version": "0.10.0",
-  "code": 11,
+  "version": "0.11.0",
+  "code": 12,
   "notes": [
-    "¡DUELO online contra jugadores reales!",
-    "Mundos nuevos: Glaciar, Abismo, Dunas y Carrera",
-    "Galaxias temáticas en Aventura",
-    "Tienda renovada con cofres nuevos",
-    "Premios al completar cada mundo",
+    "Rankings mundiales de Aventura, Extremo y Escape",
+    "¿Quién llega más lejos en el Imposible?",
+    "Temporadas del Duelo y liga DIAMANTE",
+    "Revancha, emotes y reconexión en el Duelo",
+    "Guarda tu progreso en la nube",
     "Mejoras y arreglos"
   ]
 }
