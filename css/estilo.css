@@ -117,6 +117,17 @@ a.btn-play:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(61,2
   border: 1px solid var(--acento); color: var(--texto); background: rgba(124,77,255,.15); transition: background .2s;
 }
 .btn-sec:hover { background: rgba(124,77,255,.35); }
+.btn-pri {
+  display: inline-block; padding: 14px 26px; border-radius: 14px; text-decoration: none; font-weight: 700; color: #fff;
+  background: linear-gradient(135deg, var(--acento), #b77bff); box-shadow: 0 6px 24px rgba(124,77,255,.4); transition: transform .15s, box-shadow .2s;
+}
+.btn-pri:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(124,77,255,.55); }
+
+/* Cifras del estudio bajo los botones de la portada */
+.cifras { list-style: none; margin: 32px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 28px; }
+.cifras li { display: flex; flex-direction: column; line-height: 1.2; }
+.cifras b { font-size: 30px; font-weight: 800; color: var(--cian); }
+.cifras span { color: var(--suave); font-size: 14px; }
 .enlace { color: var(--cian); text-decoration: none; font-weight: 500; }
 .enlace:hover { text-decoration: underline; }
 
@@ -158,7 +169,7 @@ a.btn-play:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(61,2
 .noticias span { font-size: 18px; }
 
 .estudio-rejilla { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: start; }
-.estudio p { color: var(--suave); font-size: 18px; margin: 0; }
+.estudio p { color: var(--suave); font-size: 18px; margin: 0 0 16px; }
 .valores { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
 .valores li { background: var(--panel); border: 1px solid var(--borde); border-radius: 14px; padding: 14px 18px; display: flex; flex-direction: column; }
 .valores b { color: var(--cian); }
@@ -203,6 +214,7 @@ a.btn-play:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(61,2
 .pie { border-top: 1px solid var(--borde); padding: 28px 0; color: var(--suave); font-size: 15px; }
 .pie-fila { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; }
 .pie a { color: var(--suave); }
+.pie-enlaces { display: flex; flex-wrap: wrap; gap: 8px 20px; }
 
 /* ---------- Prototipos ---------- */
 .seccion-intro { color: var(--suave); font-size: 18px; max-width: 40em; margin: -16px 0 28px; }
