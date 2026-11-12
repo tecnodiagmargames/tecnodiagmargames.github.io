@@ -8,6 +8,7 @@
 //           "desarrollo"  -> "En desarrollo"
 //           "secreto"     -> tarjeta misteriosa (sin detalles)
 //
+//  tipo:    "juego" o "app" (sale en la sección Juegos o en Apps de la portada)
 //  modelo:  texto corto del precio (p. ej. "Gratis con anuncios").
 //  capturas y caracteristicas son opcionales (si faltan, no sale esa sección).
 // ============================================================
@@ -21,6 +22,7 @@ const JUEGOS = [
   {
     id: "orbit-dash",   // se mantiene para no romper enlaces viejos (juego.html?id=orbit-dash)
     nombre: "Orbit King",
+    tipo: "juego",
     lema: "Salta entre órbitas, esquiva rojos y atrapa orbes en un reto de reflejos neón.",
     estado: "disponible",
     playUrl: "https://play.google.com/store/apps/details?id=com.tecnodiagmar.orbitdash",
@@ -58,6 +60,7 @@ const JUEGOS = [
   {
     id: "adivina",
     nombre: "Adivina lo que pienso",
+    tipo: "juego",
     lema: "Piensa una palabra en secreto y descubre la de tu rival con preguntas de sí o no.",
     estado: "desarrollo",
     playUrl: "",
@@ -89,10 +92,63 @@ const JUEGOS = [
       { src: "img/adivina/captura_6_acompanante.jpg", texto: "Modo acompañante" },
     ],
   },
+  {
+    id: "profe-pro",
+    nombre: "Profe Pro",
+    tipo: "app",
+    lema: "La mano derecha del docente: prepara clases con IA, lleva notas y asistencia y conecta con tus estudiantes.",
+    estado: "desarrollo",
+    playUrl: "",
+    plataforma: "Android",
+    genero: "Educación",
+    modelo: "Gratis con plan Pro",
+    color: "#3b82f6",
+    icono: "img/profe-pro/icono.png",
+    portada: "img/profe-pro/portada.jpg",
+    privacidad: "",
+    descripcion: [
+      "Profe Pro está pensada para profes ocupados: botones grandes, lenguaje claro y todo lo de la clase en un solo lugar.",
+      "Escribe el tema, el grado y la duración, y la app te propone un plan de clase, un taller o diapositivas que puedes cambiar y descargar en PDF. La IA nunca recibe los nombres de tus estudiantes.",
+    ],
+    caracteristicas: [
+      { titulo: "Clases en minutos", texto: "Planes de clase, talleres y diapositivas con IA, editables y en PDF." },
+      { titulo: "La IA propone, tú decides", texto: "Sube trabajos en foto, PDF o Word y recibe una nota sugerida por criterio. Nada se guarda sin tu visto bueno." },
+      { titulo: "Notas y asistencia", texto: "Libro de notas con promedios ponderados, exportación a Excel y PDF, y asistencia rápida incluso sin internet." },
+      { titulo: "Lo administrativo", texto: "Informes, circulares, cartas a acudientes y constancias redactadas con IA, más un calendario con recordatorios." },
+      { titulo: "Estudiantes conectados", texto: "Se unen con un código para ver tareas, notas y mensajes y entregar sus trabajos. Los menores entran con autorización de su acudiente." },
+      { titulo: "Privacidad primero", texto: "Sin publicidad y sin vender datos. Los nombres se ocultan antes de enviar cualquier texto a la IA." },
+    ],
+  },
+  {
+    id: "pliego-pdf",
+    nombre: "Pliego PDF",
+    tipo: "app",
+    lema: "Escanea, edita y convierte tus documentos en el teléfono, con resúmenes y preguntas con IA.",
+    estado: "desarrollo",
+    playUrl: "",
+    plataforma: "Android",
+    genero: "Productividad · Documentos",
+    modelo: "Gratis con Premium",
+    color: "#6d5bff",
+    icono: "img/pliego-pdf/icono.png",
+    portada: "img/pliego-pdf/portada.jpg",
+    privacidad: "https://proelmas601.github.io/pliego-pdf-privacidad/",
+    descripcion: [
+      "Pliego PDF trabaja con tus documentos en tu propio teléfono: el escaneo, el reconocimiento de texto y casi todas las herramientas funcionan sin conexión, y tus archivos no salen del dispositivo.",
+      "Cuando lo necesitas, convierte archivos de Office a PDF y al revés, resume un documento o respóndele preguntas con IA, y guarda copias cifradas en la nube.",
+    ],
+    caracteristicas: [
+      { titulo: "Escanea y reconoce texto", texto: "Convierte fotos de hojas en PDF y extrae su texto (OCR) sin conexión." },
+      { titulo: "Convierte", texto: "Word, Excel y PowerPoint a PDF, PDF a Word o texto, y PDF/A para archivar." },
+      { titulo: "IA para tus documentos", texto: "Pide un resumen o hazle preguntas a un documento largo." },
+      { titulo: "Nube cifrada", texto: "Inicia sesión para guardar y sincronizar tus documentos. Solo tu cuenta puede leerlos." },
+    ],
+  },
 ];
 
 // Noticias del estudio (la más nueva arriba). Para añadir una, copia una línea.
 const NOTICIAS = [
+  { fecha: "2026-11-12", texto: "TecnoDiagmarGames también hace apps: conoce Profe Pro, el asistente para docentes, y Pliego PDF, para escanear, convertir y entender tus documentos. Las dos llegarán pronto a Google Play." },
   { fecha: "2026-11-12", texto: "Presentamos nuestro segundo juego: Adivina lo que pienso, un duelo de preguntas de sí o no para jugar con amigos, contra la IA o en clase. Muy pronto en Google Play." },
   { fecha: "2026-11-09", texto: "Orbit King 0.12.0 ya está en Google Play: jefes al final de cada mundo, tienda premium y opción de quitar anuncios." },
   { fecha: "2026-10-24", texto: "Nueva sección de prototipos: prueba el Duelo online de Orbit King en el navegador y dinos qué te parece." },
