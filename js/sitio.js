@@ -67,10 +67,27 @@ function pintarInicio() {
     ).join("");
   }
 
-  // Juego destacado en la portada: el primero que no sea secreto
-  const dest = JUEGOS.find((j) => j.estado !== "secreto");
-  const zona = document.getElementById("destacado-play");
-  if (dest && zona) zona.innerHTML = botonPlay(dest);
+  // Enlaces de privacidad de cada juego en el pie
+  const pie = document.getElementById("pie-privacidad");
+  if (pie) {
+    pie.innerHTML = JUEGOS.filter((j) => j.privacidad).map(
+      (j) => `<a href="${esc(j.privacidad)}" target="_blank" rel="noopener">Privacidad de ${esc(j.nombre)}</a>`
+    ).join("");
+  }
+
+  // Cifras del estudio en la portada (se calculan solas con los datos)
+  const cifras = document.getElementById("cifras");
+  if (cifras) {
+    const visibles = JUEGOS.filter((j) => j.estado !== "secreto");
+    const enPlay = visibles.filter((j) => j.estado === "disponible").length;
+    const datos = [
+      [visibles.length, visibles.length === 1 ? "juego" : "juegos"],
+      [enPlay, "en Google Play"],
+      [visibles.length - enPlay, "en camino"],
+      [typeof PROTOTIPOS !== "undefined" ? PROTOTIPOS.length : 0, PROTOTIPOS.length === 1 ? "prototipo para probar" : "prototipos para probar"],
+    ];
+    cifras.innerHTML = datos.map(([n, t]) => `<li><b>${n}</b><span>${esc(t)}</span></li>`).join("");
+  }
 }
 
 function pintarJuego() {
@@ -91,28 +108,28 @@ function pintarJuego() {
         <span class="estado estado-${esc(j.estado)}">${esc(ESTADOS[j.estado] || j.estado)}</span>
         <h1>${esc(j.nombre)}</h1>
         <p class="lema">${esc(j.lema)}</p>
-        <p class="meta">${esc(j.plataforma)} · ${esc(j.genero)} · Gratis con anuncios</p>
+        <p class="meta">${[j.plataforma, j.genero, j.modelo].filter(Boolean).map(esc).join(" · ")}</p>
         <div class="tarjeta-acciones">${botonPlay(j)}</div>
       </div>
     </section>
 
     <section class="contenedor juego-texto">
-      ${j.descripcion.map((p) => `<p>${esc(p)}</p>`).join("")}
+      ${(j.descripcion || []).map((p) => `<p>${esc(p)}</p>`).join("")}
     </section>
 
-    <section class="contenedor">
+    ${j.capturas && j.capturas.length ? `<section class="contenedor">
       <h2 class="titulo-seccion">Capturas</h2>
       <div class="capturas">
         ${j.capturas.map((c) => `<figure><img src="${esc(c.src)}" alt="${esc(c.texto)}" loading="lazy"><figcaption>${esc(c.texto)}</figcaption></figure>`).join("")}
       </div>
-    </section>
+    </section>` : ""}
 
-    <section class="contenedor">
+    ${j.caracteristicas && j.caracteristicas.length ? `<section class="contenedor">
       <h2 class="titulo-seccion">Qué te espera</h2>
       <div class="caracteristicas">
         ${j.caracteristicas.map((c) => `<div class="caracteristica"><h3>${esc(c.titulo)}</h3><p>${esc(c.texto)}</p></div>`).join("")}
       </div>
-    </section>
+    </section>` : ""}
 
     <section class="contenedor juego-pie">
       ${j.privacidad ? `<a class="enlace" href="${esc(j.privacidad)}" target="_blank" rel="noopener">Política de privacidad de ${esc(j.nombre)}</a>` : ""}

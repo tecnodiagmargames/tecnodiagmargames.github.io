@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TecnoDiagmarGames · Juegos para móvil</title>
-  <meta name="description" content="TecnoDiagmarGames: estudio independiente de juegos para Android. Conoce Orbit King y nuestros próximos juegos.">
+  <title>TecnoDiagmarGames · Estudio de juegos para móvil</title>
+  <meta name="description" content="TecnoDiagmarGames es un estudio independiente de juegos para móvil. Conoce nuestros juegos: Orbit King, ya en Google Play, y Adivina lo que pienso.">
   <meta property="og:title" content="TecnoDiagmarGames">
-  <meta property="og:description" content="Juegos de reflejos con estilo neón para Android.">
+  <meta property="og:description" content="Estudio independiente de juegos para móvil: Orbit King, Adivina lo que pienso y lo que viene.">
   <meta property="og:image" content="img/orbit-king/portada.png">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,12 +38,13 @@
     <section class="hero contenedor">
       <div class="hero-texto">
         <p class="antetitulo">Estudio independiente de juegos</p>
-        <h1>Juegos pequeños,<br><span class="neon">reflejos enormes.</span></h1>
-        <p class="hero-sub">En TecnoDiagmarGames creamos juegos para móvil rápidos, coloridos y fáciles de aprender. Nuestro primer título, <b>Orbit King</b>, llega muy pronto a Google Play.</p>
+        <h1>Creamos juegos<br><span class="neon">para jugar en cualquier lugar.</span></h1>
+        <p class="hero-sub"><b>TecnoDiagmarGames</b> es un estudio que diseña, programa y publica juegos para móvil: partidas cortas, mucho color y reglas que se aprenden en segundos. Todos nuestros juegos nacen y crecen aquí.</p>
         <div class="hero-acciones">
-          <span id="destacado-play"></span>
-          <a class="btn-sec" href="juego.html?id=orbit-dash">Conocer Orbit King</a>
+          <a class="btn-pri" href="#juegos">Ver nuestros juegos</a>
+          <a class="btn-sec" href="#estudio">Conoce el estudio</a>
         </div>
+        <ul id="cifras" class="cifras"></ul>
       </div>
       <div class="hero-orbita" aria-hidden="true">
         <div class="anillo a1"><i class="bola"></i></div>
@@ -55,6 +56,7 @@
 
     <section id="juegos" class="contenedor">
       <h2 class="titulo-seccion">Nuestros juegos</h2>
+      <p class="seccion-intro">Cada juego tiene su ficha con capturas, novedades y enlace a Google Play.</p>
       <div id="lista-juegos" class="lista-juegos"></div>
     </section>
 
@@ -72,11 +74,14 @@
     <section id="estudio" class="contenedor estudio">
       <h2 class="titulo-seccion">El estudio</h2>
       <div class="estudio-rejilla">
-        <p>TecnoDiagmarGames es un pequeño estudio que hace juegos hyper-casual para Android: partidas cortas, una sola mano y mucho color. Cada juego lo diseñamos, programamos y probamos nosotros mismos, escuchando lo que dicen quienes los juegan.</p>
+        <div>
+          <p>TecnoDiagmarGames es un pequeño estudio independiente que hace juegos para Android. Cada juego lo diseñamos, programamos y probamos nosotros mismos, y lo seguimos mejorando con lo que nos cuentan quienes lo juegan.</p>
+          <p>Hacemos juegos de reflejos como <b>Orbit King</b> y juegos para compartir con amigos, en familia o en clase como <b>Adivina lo que pienso</b>. Antes de llegar a un juego, muchas ideas pasan por la sección de prototipos para que tú las pruebes primero.</p>
+        </div>
         <ul class="valores">
-          <li><b>Rápidos</b><span>Partidas de pocos minutos.</span></li>
-          <li><b>Gratis</b><span>Sin pagar para jugar.</span></li>
-          <li><b>Sin conexión</b><span>Juega donde quieras.</span></li>
+          <li><b>Fáciles de aprender</b><span>Reglas que se entienden en segundos.</span></li>
+          <li><b>Gratis para jugar</b><span>Sin pagar para empezar.</span></li>
+          <li><b>Siempre mejorando</b><span>Actualizaciones con lo que nos piden.</span></li>
         </ul>
       </div>
     </section>
@@ -91,7 +96,7 @@
   <footer class="pie">
     <div class="contenedor pie-fila">
       <span>© <span id="anio">2026</span> TecnoDiagmarGames</span>
-      <a href="https://proelmas601.github.io/orbit-dash-privacy/" target="_blank" rel="noopener">Privacidad de Orbit King</a>
+      <span id="pie-privacidad" class="pie-enlaces"><a href="https://proelmas601.github.io/orbit-dash-privacy/" target="_blank" rel="noopener">Privacidad de Orbit King</a></span>
     </div>
   </footer>
 

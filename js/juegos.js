@@ -8,8 +8,8 @@
 //           "desarrollo"  -> "En desarrollo"
 //           "secreto"     -> tarjeta misteriosa (sin detalles)
 //
-//  Cuando Orbit King esté publicado: pon estado: "disponible" y
-//  playUrl: "https://play.google.com/store/apps/details?id=com.tecnodiagmar.orbitdash"
+//  modelo:  texto corto del precio (p. ej. "Gratis con anuncios").
+//  capturas y caracteristicas son opcionales (si faltan, no sale esa sección).
 // ============================================================
 
 const ESTUDIO = {
@@ -22,9 +22,10 @@ const JUEGOS = [
     id: "orbit-dash",   // se mantiene para no romper enlaces viejos (juego.html?id=orbit-dash)
     nombre: "Orbit King",
     lema: "Salta entre órbitas, esquiva rojos y atrapa orbes en un reto de reflejos neón.",
-    estado: "prueba",
-    playUrl: "",
+    estado: "disponible",
+    playUrl: "https://play.google.com/store/apps/details?id=com.tecnodiagmar.orbitdash",
     plataforma: "Android",
+    modelo: "Gratis con anuncios y compras opcionales",
     genero: "Arcade · Reflejos",
     color: "#22e5ff",
     icono: "img/orbit-king/icono.png",
@@ -37,7 +38,8 @@ const JUEGOS = [
     caracteristicas: [
       { titulo: "Aventura", texto: "Viaja de galaxia en galaxia: las órbitas cambian, se desenrollan en carriles y aparecen líneas nuevas. Elige Normal o Extremo." },
       { titulo: "Escape", texto: "El sol crece sin parar y quema las órbitas. Atrapa orbes azules para abrir líneas por fuera y huye de estrella en estrella." },
-      { titulo: "Mundos y niveles", texto: "De Novatos al Imposible, pasando por el Infierno y el Núcleo volcánico: cada nivel con su temática, su canción y un premio al superarlo. ¡Y vienen más!" },
+      { titulo: "9 mundos y sus jefes", texto: "Más de 150 niveles, de Novatos al Imposible, pasando por el Infierno, el Glaciar eterno o la Carrera. Cada mundo acaba con un jefe que tiene su propia canción." },
+      { titulo: "Duelo online", texto: "Reta a otro jugador en tiempo real o a un amigo con un código de sala, y sube en el ranking de trofeos." },
       { titulo: "Corredor en 3D", texto: "Las órbitas se estiran en una pista que corre hacia ti: salta los rojos, pasa por debajo de los arcos y cambia de línea." },
       { titulo: "Personaliza", texto: "Colores, formas, estelas, órbitas, estallidos al chocar, entradas de cine, fondos y música." },
       { titulo: "Premios y retos", texto: "Retos diarios, ruleta, más de 50 logros, cofres, diamantes y boosters como imán x2 o doble monedas." },
@@ -54,16 +56,45 @@ const JUEGOS = [
     ],
   },
   {
-    id: "proximo",
-    nombre: "Próximo juego",
-    lema: "Algo nuevo se está cocinando en el estudio. Muy pronto, más información.",
-    estado: "secreto",
-    color: "#7c4dff",
+    id: "adivina",
+    nombre: "Adivina lo que pienso",
+    lema: "Piensa una palabra en secreto y descubre la de tu rival con preguntas de sí o no.",
+    estado: "desarrollo",
+    playUrl: "",
+    plataforma: "Android",
+    genero: "Palabras · Familia y amigos",
+    modelo: "Gratis",
+    color: "#ec4899",
+    icono: "img/adivina/icono.png",
+    portada: "img/adivina/portada.jpg",
+    privacidad: "",
+    descripcion: [
+      "Cada jugador elige en secreto una palabra de un tema (animales, frutas, colores, comida…) y, por turnos, se hacen preguntas de sí o no. Gana quien adivine antes la palabra del otro. Si se atascan, pueden pedir una pista.",
+      "Se juega en línea entre dos teléfonos, contra la IA o en persona con el modo acompañante. También tiene un modo escuela para que los docentes creen clases y tareas.",
+    ],
+    caracteristicas: [
+      { titulo: "En línea con amigos", texto: "Crea una sala, comparte el código y juega en modo Clásico, Contrarreloj, Sin pistas, Tema sorpresa o Torneo." },
+      { titulo: "Contra la IA", texto: "Adivina la palabra de la máquina o deja que ella adivine la tuya, incluso sin internet." },
+      { titulo: "Reto diario", texto: "Una palabra para todos cada día, un solo intento y una racha que cuidar." },
+      { titulo: "Modo acompañante", texto: "Marcador y cronómetro para jugar en persona o en directo, sin conexión." },
+      { titulo: "Modo escuela", texto: "Clases con código, tareas y resultados para docentes, con vocabulario por edades, inglés, Matemáticas, Geografía y Ciencias." },
+      { titulo: "Amigos y logros", texto: "Agrega amigos por código, compite en el ranking semanal, sube de nivel y desbloquea temas." },
+    ],
+    capturas: [
+      { src: "img/adivina/captura_1_inicio.jpg", texto: "Inicio" },
+      { src: "img/adivina/captura_2_partida.jpg", texto: "Partida" },
+      { src: "img/adivina/captura_3_pregunta.jpg", texto: "Pregunta de tu rival" },
+      { src: "img/adivina/captura_4_resultado.jpg", texto: "¡Ganaste!" },
+      { src: "img/adivina/captura_5_reto_diario.jpg", texto: "Reto diario" },
+      { src: "img/adivina/captura_6_acompanante.jpg", texto: "Modo acompañante" },
+    ],
   },
 ];
 
 // Noticias del estudio (la más nueva arriba). Para añadir una, copia una línea.
 const NOTICIAS = [
+  { fecha: "2026-11-12", texto: "Presentamos nuestro segundo juego: Adivina lo que pienso, un duelo de preguntas de sí o no para jugar con amigos, contra la IA o en clase. Muy pronto en Google Play." },
+  { fecha: "2026-11-09", texto: "Orbit King 0.12.0 ya está en Google Play: jefes al final de cada mundo, tienda premium y opción de quitar anuncios." },
   { fecha: "2026-10-24", texto: "Nueva sección de prototipos: prueba el Duelo online de Orbit King en el navegador y dinos qué te parece." },
   { fecha: "2026-10-24", texto: "Orbit King 0.8.1 ya está en la prueba cerrada de Google Play: modos Aventura y Escape, 50 niveles en 3 mundos y corredor en 3D." },
   { fecha: "2026-10-23", texto: "Orbit Dash ahora se llama Orbit King: llegan 2 mundos nuevos, retos diarios y estelas." },
@@ -86,7 +117,7 @@ const PROTOTIPOS = [
     url: "prototipos/duelo/index.html",
     lema: "Pantalla dividida contra otro jugador: arriba ves a tu rival en vivo y abajo juegas tú, con los mismos orbes y rojos para los dos.",
     descripcion: [
-      "Es una idea para un modo online de Orbit King. Los dos jugáis la misma partida (misma semilla) durante 90 segundos y con 3 vidas. Gana quien tenga más puntos o quien deje al otro sin vidas.",
+      "Es una idea para un modo online de Orbit King. Los dos juegan la misma partida (misma semilla) durante 90 segundos y con 3 vidas. Gana quien tenga más puntos o quien deje al otro sin vidas.",
       "Cada orbe llena tu barra de ataque. Al llenarse le lanza al rival un MURO de rojos, una REVERSA del sentido de giro o un APAGÓN, con un segundo de aviso.",
     ],
     probar: [
