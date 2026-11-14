@@ -10,6 +10,7 @@
 //
 //  modelo:  texto corto del precio (p. ej. "Gratis con anuncios").
 //  capturas y caracteristicas son opcionales (si faltan, no sale esa sección).
+//  version, estadoTexto, terminos y novedades también son opcionales.
 // ============================================================
 
 const ESTUDIO = {
@@ -55,45 +56,14 @@ const JUEGOS = [
       { src: "img/orbit-king/captura_8_reflejos.jpg", texto: "Reflejos neón" },
     ],
   },
-  {
-    id: "adivina",
-    nombre: "Adivina lo que pienso",
-    lema: "Piensa una palabra en secreto y descubre la de tu rival con preguntas de sí o no.",
-    estado: "desarrollo",
-    playUrl: "",
-    plataforma: "Android",
-    genero: "Palabras · Familia y amigos",
-    modelo: "Gratis",
-    color: "#ec4899",
-    icono: "img/adivina/icono.png",
-    portada: "img/adivina/portada.jpg",
-    privacidad: "",
-    descripcion: [
-      "Cada jugador elige en secreto una palabra de un tema (animales, frutas, colores, comida…) y, por turnos, se hacen preguntas de sí o no. Gana quien adivine antes la palabra del otro. Si se atascan, pueden pedir una pista.",
-      "Se juega en línea entre dos teléfonos, contra la IA o en persona con el modo acompañante. También tiene un modo escuela para que los docentes creen clases y tareas.",
-    ],
-    caracteristicas: [
-      { titulo: "En línea con amigos", texto: "Crea una sala, comparte el código y juega en modo Clásico, Contrarreloj, Sin pistas, Tema sorpresa o Torneo." },
-      { titulo: "Contra la IA", texto: "Adivina la palabra de la máquina o deja que ella adivine la tuya, incluso sin internet." },
-      { titulo: "Reto diario", texto: "Una palabra para todos cada día, un solo intento y una racha que cuidar." },
-      { titulo: "Modo acompañante", texto: "Marcador y cronómetro para jugar en persona o en directo, sin conexión." },
-      { titulo: "Modo escuela", texto: "Clases con código, tareas y resultados para docentes, con vocabulario por edades, inglés, Matemáticas, Geografía y Ciencias." },
-      { titulo: "Amigos y logros", texto: "Agrega amigos por código, compite en el ranking semanal, sube de nivel y desbloquea temas." },
-    ],
-    capturas: [
-      { src: "img/adivina/captura_1_inicio.jpg", texto: "Inicio" },
-      { src: "img/adivina/captura_2_partida.jpg", texto: "Partida" },
-      { src: "img/adivina/captura_3_pregunta.jpg", texto: "Pregunta de tu rival" },
-      { src: "img/adivina/captura_4_resultado.jpg", texto: "¡Ganaste!" },
-      { src: "img/adivina/captura_5_reto_diario.jpg", texto: "Reto diario" },
-      { src: "img/adivina/captura_6_acompanante.jpg", texto: "Modo acompañante" },
-    ],
-  },
-];
+  // Adivina lo que pienso: su ficha viene del repo juego-adivina (ficha_web/ficha.json).
+  // No se edita aquí: ver "Fichas sincronizadas" en CLAUDE.md.
+  (window.FICHAS || {})["adivina"],
+].filter(Boolean);   // si una ficha no carga, se omite en vez de romper la web
 
 // Noticias del estudio (la más nueva arriba). Para añadir una, copia una línea.
+// Las noticias de las fichas sincronizadas (js/fichas/) se mezclan solas por fecha.
 const NOTICIAS = [
-  { fecha: "2026-11-12", texto: "Presentamos nuestro segundo juego: Adivina lo que pienso, un duelo de preguntas de sí o no para jugar con amigos, contra la IA o en clase. Muy pronto en Google Play." },
   { fecha: "2026-11-09", texto: "Orbit King 0.12.0 ya está en Google Play: jefes al final de cada mundo, tienda premium y opción de quitar anuncios." },
   { fecha: "2026-10-24", texto: "Nueva sección de prototipos: prueba el Duelo online de Orbit King en el navegador y dinos qué te parece." },
   { fecha: "2026-10-24", texto: "Orbit King 0.8.1 ya está en la prueba cerrada de Google Play: modos Aventura y Escape, 50 niveles en 3 mundos y corredor en 3D." },

@@ -8,6 +8,17 @@ const ESTADOS = {
   secreto: "Próximamente",
 };
 
+// Texto del estado: la ficha puede traer uno propio (p. ej. "En prueba interna").
+function textoEstado(j) {
+  return j.estadoTexto || ESTADOS[j.estado] || j.estado;
+}
+
+// Noticias del estudio + las de las fichas sincronizadas, de la más nueva a la más vieja.
+function todasLasNoticias() {
+  const deFichas = JUEGOS.flatMap((j) => j.noticias || []);
+  return NOTICIAS.concat(deFichas).sort((a, b) => b.fecha.localeCompare(a.fecha));
+}
+
 function esc(t) {
   const d = document.createElement("div");
   d.textContent = t == null ? "" : String(t);
@@ -39,7 +50,7 @@ function tarjeta(j) {
       <img src="${esc(j.portada)}" alt="${esc(j.nombre)}" loading="lazy">
     </a>
     <div class="tarjeta-cuerpo">
-      <span class="estado estado-${esc(j.estado)}">${esc(ESTADOS[j.estado] || j.estado)}</span>
+      <span class="estado estado-${esc(j.estado)}">${esc(textoEstado(j))}</span>
       <h3><a href="juego.html?id=${encodeURIComponent(j.id)}">${esc(j.nombre)}</a></h3>
       <p>${esc(j.lema)}</p>
       <div class="tarjeta-acciones">
@@ -62,7 +73,7 @@ function pintarInicio() {
 
   const noticias = document.getElementById("lista-noticias");
   if (noticias) {
-    noticias.innerHTML = NOTICIAS.map(
+    noticias.innerHTML = todasLasNoticias().map(
       (n) => `<li><time datetime="${esc(n.fecha)}">${fechaBonita(n.fecha)}</time><span>${esc(n.texto)}</span></li>`
     ).join("");
   }
@@ -105,10 +116,10 @@ function pintarJuego() {
     <section class="juego-cabecera contenedor">
       <img class="juego-icono" src="${esc(j.icono)}" alt="Icono de ${esc(j.nombre)}" width="128" height="128">
       <div>
-        <span class="estado estado-${esc(j.estado)}">${esc(ESTADOS[j.estado] || j.estado)}</span>
+        <span class="estado estado-${esc(j.estado)}">${esc(textoEstado(j))}</span>
         <h1>${esc(j.nombre)}</h1>
         <p class="lema">${esc(j.lema)}</p>
-        <p class="meta">${[j.plataforma, j.genero, j.modelo].filter(Boolean).map(esc).join(" · ")}</p>
+        <p class="meta">${[j.plataforma, j.genero, j.modelo, j.version && `Versión ${j.version}`].filter(Boolean).map(esc).join(" · ")}</p>
         <div class="tarjeta-acciones">${botonPlay(j)}</div>
       </div>
     </section>
@@ -131,7 +142,15 @@ function pintarJuego() {
       </div>
     </section>` : ""}
 
+    ${j.novedades && j.novedades.length ? `<section class="contenedor">
+      <h2 class="titulo-seccion">Novedades</h2>
+      <ul class="noticias">
+        ${j.novedades.map((n) => `<li><time datetime="${esc(n.fecha)}">${fechaBonita(n.fecha)}</time><span>${n.version ? `<b>${esc(n.version)}</b> · ` : ""}${esc(n.texto)}</span></li>`).join("")}
+      </ul>
+    </section>` : ""}
+
     <section class="contenedor juego-pie">
+      ${j.terminos ? `<a class="enlace" href="${esc(j.terminos)}" target="_blank" rel="noopener">Términos de ${esc(j.nombre)}</a>` : ""}
       ${j.privacidad ? `<a class="enlace" href="${esc(j.privacidad)}" target="_blank" rel="noopener">Política de privacidad de ${esc(j.nombre)}</a>` : ""}
       <a class="enlace" href="index.html#juegos">← Todos los juegos</a>
     </section>`;
