@@ -57,8 +57,15 @@ function fechaBonita(iso) {
 }
 
 function pintarInicio() {
+  const tipo = (j) => j.tipo || "juego";
   const lista = document.getElementById("lista-juegos");
-  if (lista) lista.innerHTML = JUEGOS.map(tarjeta).join("");
+  if (lista) lista.innerHTML = JUEGOS.filter((j) => tipo(j) === "juego").map(tarjeta).join("");
+  const apps = document.getElementById("lista-apps");
+  if (apps) {
+    const lasApps = JUEGOS.filter((j) => tipo(j) === "app");
+    apps.innerHTML = lasApps.map(tarjeta).join("");
+    if (!lasApps.length) apps.closest("section").hidden = true;
+  }
 
   const noticias = document.getElementById("lista-noticias");
   if (noticias) {
@@ -79,13 +86,15 @@ function pintarInicio() {
   const cifras = document.getElementById("cifras");
   if (cifras) {
     const visibles = JUEGOS.filter((j) => j.estado !== "secreto");
+    const juegos = visibles.filter((j) => (j.tipo || "juego") === "juego").length;
+    const nApps = visibles.length - juegos;
     const enPlay = visibles.filter((j) => j.estado === "disponible").length;
     const datos = [
-      [visibles.length, visibles.length === 1 ? "juego" : "juegos"],
+      [juegos, juegos === 1 ? "juego" : "juegos"],
+      [nApps, nApps === 1 ? "app" : "apps"],
       [enPlay, "en Google Play"],
       [visibles.length - enPlay, "en camino"],
-      [typeof PROTOTIPOS !== "undefined" ? PROTOTIPOS.length : 0, PROTOTIPOS.length === 1 ? "prototipo para probar" : "prototipos para probar"],
-    ];
+    ].filter(([n]) => n > 0);
     cifras.innerHTML = datos.map(([n, t]) => `<li><b>${n}</b><span>${esc(t)}</span></li>`).join("");
   }
 }
@@ -96,7 +105,7 @@ function pintarJuego() {
   const id = new URLSearchParams(location.search).get("id");
   const j = JUEGOS.find((x) => x.id === id && x.estado !== "secreto");
   if (!j) {
-    zona.innerHTML = `<section class="contenedor vacio"><h1>Juego no encontrado</h1><p><a class="enlace" href="index.html#juegos">← Volver a los juegos</a></p></section>`;
+    zona.innerHTML = `<section class="contenedor vacio"><h1>Producto no encontrado</h1><p><a class="enlace" href="index.html#juegos">← Volver a los productos</a></p></section>`;
     return;
   }
   document.title = `${j.nombre} · ${ESTUDIO.nombre}`;
@@ -133,7 +142,9 @@ function pintarJuego() {
 
     <section class="contenedor juego-pie">
       ${j.privacidad ? `<a class="enlace" href="${esc(j.privacidad)}" target="_blank" rel="noopener">Política de privacidad de ${esc(j.nombre)}</a>` : ""}
-      <a class="enlace" href="index.html#juegos">← Todos los juegos</a>
+      ${(j.tipo || "juego") === "app"
+        ? '<a class="enlace" href="index.html#apps">← Todas las apps</a>'
+        : '<a class="enlace" href="index.html#juegos">← Todos los juegos</a>'}
     </section>`;
 
   // Ver capturas en grande al tocarlas
