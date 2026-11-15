@@ -10,7 +10,7 @@ FICHAS["adivina"] = {
   "estadoTexto": "En prueba interna",
   "playUrl": "",
   "plataforma": "Android",
-  "genero": "Palabras · Familia y amigos · Educación",
+  "genero": "Palabras · Familia y escuela",
   "modelo": "Gratis",
   "color": "#ec4899",
   "icono": "img/adivina/icono.png",
@@ -18,33 +18,41 @@ FICHAS["adivina"] = {
   "privacidad": "https://adivina-lo-que-pienso.web.app/privacidad.html",
   "terminos": "https://adivina-lo-que-pienso.web.app/terminos.html",
   "descripcion": [
-    "Cada jugador elige en secreto una palabra de un tema (animales, frutas, países, deportes, profesiones…) y, por turnos, se hacen preguntas de sí o no. Gana quien adivine antes la palabra del otro. Si se atascan, pueden pedir una pista.",
-    "Se juega en línea entre dos teléfonos (también con videollamada o solo micrófono), contra una IA que habla y tiene personalidad, en grupo con el modo fiesta o en persona con el modo acompañante. Y tiene un modo escuela completo para que los docentes creen clases, tareas y clases en vivo."
+    "Cada jugador elige en secreto una palabra de un tema (animales, frutas, profesiones, deportes…) y, por turnos, se hacen preguntas de sí o no. Gana quien adivine antes la palabra del otro. Si se atascan, pueden pedir una pista.",
+    "Se juega en línea entre dos teléfonos, con videollamada, contra una IA con voz y personalidad, o en persona con el modo acompañante y el modo fiesta. Además tiene un modo escuela completo para que estudiantes y docentes aprendan jugando."
   ],
   "caracteristicas": [
     {
-      "titulo": "En línea con amigos",
-      "texto": "Crea una sala, comparte el código o un enlace de reto y juega en modo Clásico, Contrarreloj, Sin pistas, Tema sorpresa o Torneo. También con videollamada o solo micrófono."
+      "titulo": "En línea y en vivo",
+      "texto": "Crea una sala, comparte el código y juega en modo Clásico, Contrarreloj, Sin pistas, Tema sorpresa o Torneo. También con videollamada o solo con micrófono."
     },
     {
       "titulo": "Contra la IA",
-      "texto": "Adivina la palabra de la máquina, deja que ella adivine la tuya o enfréntala en un duelo por turnos. Habla, comenta en vivo, tiene personalidades y varias dificultades, con comodines y contrarreloj."
-    },
-    {
-      "titulo": "Modo fiesta",
-      "texto": "De 3 a 8 jugadores o por equipos, con palabras de un tema, del diccionario o escritas por ustedes, y hasta un modo mentiroso."
-    },
-    {
-      "titulo": "Retos y amigos",
-      "texto": "Reto diario con racha, misiones, ranking semanal y logros. Agrega amigos por código, mira quién está conectado e invítalos a jugar."
+      "texto": "Adivina la palabra de la máquina, deja que ella adivine la tuya (queda guardada para que nadie haga trampa) o enfréntense en un duelo por turnos. Tiene voz, tres personalidades y tres dificultades."
     },
     {
       "titulo": "Modo escuela",
-      "texto": "Clases con código o QR, tareas, Clase en vivo, informe en Excel e insignias. Seis niveles, de 6 años a profesional: vocabulario, inglés, Matemáticas, Geografía, Ciencias, Historia, ortografía, verbos y comprensión lectora."
+      "texto": "Seis niveles, desde los 6 años hasta adultos: lengua, ortografía, verbos, comprensión lectora, inglés, Matemáticas, Geografía, Ciencias, Historia y Cultura general."
     },
     {
-      "titulo": "Modo acompañante",
-      "texto": "Marcador y cronómetro paso a paso para jugar en persona o en directo, sin conexión."
+      "titulo": "Aprender cada día",
+      "texto": "Repaso inteligente de lo que te costó, racha con meta diaria, palabra del día, prueba de nivel, modo examen con nota y dictado con voz."
+    },
+    {
+      "titulo": "Para docentes",
+      "texto": "Clases con código o QR, tareas con fecha de entrega, panel con quién va atrasado, insignias para los estudiantes e informe en Excel."
+    },
+    {
+      "titulo": "Reto diario",
+      "texto": "Una palabra para todos cada día, un solo intento y una racha que cuidar."
+    },
+    {
+      "titulo": "Modo fiesta y acompañante",
+      "texto": "Para jugar en grupo con un solo teléfono, o con marcador y cronómetro en persona o en directo."
+    },
+    {
+      "titulo": "Amigos y logros",
+      "texto": "Agrega amigos por código, compite en el ranking semanal, cumple misiones, sube de nivel y desbloquea temas y avatares."
     }
   ],
   "novedades": [
@@ -72,7 +80,7 @@ FICHAS["adivina"] = {
   "noticias": [
     {
       "fecha": "2026-11-14",
-      "texto": "Adivina lo que pienso ya está en prueba interna en Google Play: duelo por turnos contra la IA, modo escuela con seis niveles y modo fiesta de hasta 8 jugadores."
+      "texto": "Adivina lo que pienso ya está en prueba en Google Play: duelo por turnos contra la IA, modo escuela con seis niveles, ortografía, lectura, Historia y más, y herramientas para docentes."
     },
     {
       "fecha": "2026-11-12",
