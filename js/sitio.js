@@ -1,5 +1,9 @@
 // Lógica de la web: pinta tarjetas, la página de cada juego y el fondo de estrellas.
 // Los datos están en juegos.js (no hace falta tocar este archivo para añadir juegos).
+//
+// Temas: la portada usa el tema de la EMPRESA (claro). La ficha de cada producto
+// pone en <body> la clase "tema-<id>" (o "tema-<tema>" si el producto trae `tema`)
+// y css/estilo.css le da sus colores y letras. Las estrellas solo salen en Orbit King.
 
 const ESTADOS = {
   disponible: "Disponible",
@@ -61,6 +65,28 @@ function tarjeta(j) {
   </article>`;
 }
 
+// Pone el tema de un producto en la página (clase en <body> y color de la barra del móvil).
+function ponerTema(id) {
+  if (!id) return;
+  document.body.classList.add("tema-" + id);
+  const fondo = getComputedStyle(document.body).getPropertyValue("--fondo").trim();
+  let meta = document.querySelector('meta[name="theme-color"]');
+  if (!meta) { meta = document.createElement("meta"); meta.name = "theme-color"; document.head.appendChild(meta); }
+  if (fondo) meta.content = fondo;
+}
+
+function temaDe(j) {
+  return j.tema || j.id;
+}
+
+// Vitrina de la portada: el icono de cada producto, enlazado a su página.
+function itemVitrina(j) {
+  return `<a class="vitrina-item" href="juego.html?id=${encodeURIComponent(j.id)}" style="--c:${esc(j.color)}">
+    <img src="${esc(j.icono)}" alt="" width="96" height="96" loading="lazy">
+    <b>${esc(j.nombre)}</b><small>${(j.tipo || "juego") === "app" ? "App" : "Juego"}</small>
+  </a>`;
+}
+
 function fechaBonita(iso) {
   const [a, m, d] = iso.split("-").map(Number);
   const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
@@ -77,6 +103,9 @@ function pintarInicio() {
     apps.innerHTML = lasApps.map(tarjeta).join("");
     if (!lasApps.length) apps.closest("section").hidden = true;
   }
+
+  const vitrina = document.getElementById("vitrina");
+  if (vitrina) vitrina.innerHTML = JUEGOS.filter((j) => j.estado !== "secreto" && j.icono).slice(0, 4).map(itemVitrina).join("");
 
   const noticias = document.getElementById("lista-noticias");
   if (noticias) {
@@ -120,7 +149,9 @@ function pintarJuego() {
     return;
   }
   document.title = `${j.nombre} · ${ESTUDIO.nombre}`;
+  ponerTema(temaDe(j));
   zona.style.setProperty("--c", j.color);
+  const protos = (typeof PROTOTIPOS !== "undefined" ? PROTOTIPOS : []).filter((p) => p.juegoId === j.id);
   zona.innerHTML = `
     <section class="juego-cabecera contenedor">
       <img class="juego-icono" src="${esc(j.icono)}" alt="Icono de ${esc(j.nombre)}" width="128" height="128">
@@ -158,6 +189,12 @@ function pintarJuego() {
       </ul>
     </section>` : ""}
 
+    ${protos.length ? `<section class="contenedor" id="prototipos">
+      <h2 class="titulo-seccion">Prototipos</h2>
+      <p class="seccion-intro">Ideas jugables que todavía no están en ${esc(j.nombre)}. Pruébalas desde el navegador, califícalas y cuéntanos qué cambiarías.</p>
+      <div id="lista-prototipos" class="lista-juegos"></div>
+    </section>` : ""}
+
     <section class="contenedor juego-pie">
       ${j.terminos ? `<a class="enlace" href="${esc(j.terminos)}" target="_blank" rel="noopener">Términos de ${esc(j.nombre)}</a>` : ""}
       ${j.privacidad ? `<a class="enlace" href="${esc(j.privacidad)}" target="_blank" rel="noopener">Política de privacidad de ${esc(j.nombre)}</a>` : ""}
@@ -165,6 +202,12 @@ function pintarJuego() {
         ? '<a class="enlace" href="index.html#apps">← Todas las apps</a>'
         : '<a class="enlace" href="index.html#juegos">← Todos los juegos</a>'}
     </section>`;
+
+  // La ficha se pinta después de cargar: si el enlace trae #seccion, ir a ella
+  if (location.hash) {
+    const destino = document.getElementById(location.hash.slice(1));
+    if (destino) setTimeout(() => destino.scrollIntoView(), 0);
+  }
 
   // Ver capturas en grande al tocarlas
   zona.querySelectorAll(".capturas img").forEach((img) => {
@@ -203,10 +246,12 @@ function tarjetaPrototipo(p) {
   </article>`;
 }
 
+// Prototipos de un producto, dentro de su ficha (juegoId = id del producto).
 function pintarPrototipos() {
   const lista = document.getElementById("lista-prototipos");
   if (!lista || typeof PROTOTIPOS === "undefined") return;
-  lista.innerHTML = PROTOTIPOS.map(tarjetaPrototipo).join("");
+  const id = new URLSearchParams(location.search).get("id");
+  lista.innerHTML = PROTOTIPOS.filter((p) => p.juegoId === id).map(tarjetaPrototipo).join("");
   if (!firebaseListo()) return;
   lista.querySelectorAll("[data-nota]").forEach(async (zona) => {
     try { zona.innerHTML = resumenNota(await leerComentarios(zona.dataset.nota)); } catch (e) { zona.innerHTML = ""; }
@@ -219,10 +264,12 @@ function pintarPrototipo() {
   const id = new URLSearchParams(location.search).get("id");
   const p = (typeof PROTOTIPOS !== "undefined" ? PROTOTIPOS : []).find((x) => x.id === id);
   if (!p) {
-    zona.innerHTML = `<section class="contenedor vacio"><h1>Prototipo no encontrado</h1><p><a class="enlace" href="index.html#prototipos">← Ver los prototipos</a></p></section>`;
+    zona.innerHTML = `<section class="contenedor vacio"><h1>Prototipo no encontrado</h1><p><a class="enlace" href="index.html#juegos">← Ver nuestros juegos</a></p></section>`;
     return;
   }
   document.title = `${p.nombre} · Prototipo · ${ESTUDIO.nombre}`;
+  const delJuego = JUEGOS.find((j) => j.id === p.juegoId);
+  if (delJuego) ponerTema(temaDe(delJuego));
   zona.style.setProperty("--c", p.color);
   const tactil = matchMedia("(pointer: coarse)").matches;
   zona.innerHTML = `
@@ -262,7 +309,9 @@ function pintarPrototipo() {
     </section>
 
     <section class="contenedor juego-pie">
-      <a class="enlace" href="index.html#prototipos">← Todos los prototipos</a>
+      ${delJuego
+        ? `<a class="enlace" href="juego.html?id=${encodeURIComponent(delJuego.id)}#prototipos">← Volver a ${esc(delJuego.nombre)}</a>`
+        : '<a class="enlace" href="index.html#juegos">← Nuestros juegos</a>'}
     </section>`;
 
   if (!firebaseListo()) {
@@ -414,7 +463,7 @@ const COLORES_COMETA = ["255,214,10", "34,229,255", "124,77,255", "255,255,255"]
 
 function estrellas() {
   const cv = document.getElementById("estrellas");
-  if (!cv) return;
+  if (!cv || getComputedStyle(cv).display === "none") return;   // solo en el tema de Orbit King
   const ctx = cv.getContext("2d");
   const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
   let lista = [];

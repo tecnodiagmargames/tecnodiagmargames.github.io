@@ -12,6 +12,8 @@
 //  modelo:  texto corto del precio (p. ej. "Gratis con anuncios").
 //  capturas y caracteristicas son opcionales (si faltan, no sale esa sección).
 //  version, estadoTexto, terminos y novedades también son opcionales.
+//  tema:    opcional. La ficha usa el tema "tema-<id>" de css/estilo.css
+//           (o "tema-<tema>" si se pone). Sin tema propio = tema de la empresa.
 // ============================================================
 
 const ESTUDIO = {
@@ -137,6 +139,7 @@ const PROTOTIPOS = [
     id: "duelo",
     nombre: "Duelo online",
     juego: "Orbit King",
+    juegoId: "orbit-dash",   // sale en la ficha de este producto y usa su tema
     fecha: "2026-10-24",
     color: "#b77bff",
     url: "prototipos/duelo/index.html",
