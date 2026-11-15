@@ -11,6 +11,7 @@
 //  tipo:    "juego" o "app" (sale en la sección Juegos o en Apps de la portada)
 //  modelo:  texto corto del precio (p. ej. "Gratis con anuncios").
 //  capturas y caracteristicas son opcionales (si faltan, no sale esa sección).
+//  version, estadoTexto, terminos y novedades también son opcionales.
 // ============================================================
 
 const ESTUDIO = {
@@ -57,43 +58,9 @@ const JUEGOS = [
       { src: "img/orbit-king/captura_8_reflejos.jpg", texto: "Reflejos neón" },
     ],
   },
-  {
-    id: "adivina",
-    nombre: "Adivina lo que pienso",
-    tipo: "juego",
-    lema: "Piensa una palabra en secreto y descubre la de tu rival con preguntas de sí o no.",
-    estado: "prueba",
-    playUrl: "",
-    plataforma: "Android",
-    genero: "Palabras · Familia y escuela",
-    modelo: "Gratis",
-    color: "#ec4899",
-    icono: "img/adivina/icono.png",
-    portada: "img/adivina/portada.jpg",
-    privacidad: "https://adivina-lo-que-pienso.web.app/privacidad.html",
-    descripcion: [
-      "Cada jugador elige en secreto una palabra de un tema (animales, frutas, profesiones, deportes…) y, por turnos, se hacen preguntas de sí o no. Gana quien adivine antes la palabra del otro. Si se atascan, pueden pedir una pista.",
-      "Se juega en línea entre dos teléfonos, con videollamada, contra una IA con voz y personalidad, o en persona con el modo acompañante y el modo fiesta. Además tiene un modo escuela completo para que estudiantes y docentes aprendan jugando.",
-    ],
-    caracteristicas: [
-      { titulo: "En línea y en vivo", texto: "Crea una sala, comparte el código y juega en modo Clásico, Contrarreloj, Sin pistas, Tema sorpresa o Torneo. También con videollamada o solo con micrófono." },
-      { titulo: "Contra la IA", texto: "Adivina la palabra de la máquina, deja que ella adivine la tuya (queda guardada para que nadie haga trampa) o enfréntense en un duelo por turnos. Tiene voz, tres personalidades y tres dificultades." },
-      { titulo: "Modo escuela", texto: "Seis niveles, desde los 6 años hasta adultos: lengua, ortografía, verbos, comprensión lectora, inglés, Matemáticas, Geografía, Ciencias, Historia y Cultura general." },
-      { titulo: "Aprender cada día", texto: "Repaso inteligente de lo que te costó, racha con meta diaria, palabra del día, prueba de nivel, modo examen con nota y dictado con voz." },
-      { titulo: "Para docentes", texto: "Clases con código o QR, tareas con fecha de entrega, panel con quién va atrasado, insignias para los estudiantes e informe en Excel." },
-      { titulo: "Reto diario", texto: "Una palabra para todos cada día, un solo intento y una racha que cuidar." },
-      { titulo: "Modo fiesta y acompañante", texto: "Para jugar en grupo con un solo teléfono, o con marcador y cronómetro en persona o en directo." },
-      { titulo: "Amigos y logros", texto: "Agrega amigos por código, compite en el ranking semanal, cumple misiones, sube de nivel y desbloquea temas y avatares." },
-    ],
-    capturas: [
-      { src: "img/adivina/captura_1_inicio.jpg", texto: "Inicio" },
-      { src: "img/adivina/captura_2_partida.jpg", texto: "Partida" },
-      { src: "img/adivina/captura_3_pregunta.jpg", texto: "Pregunta de tu rival" },
-      { src: "img/adivina/captura_4_resultado.jpg", texto: "¡Ganaste!" },
-      { src: "img/adivina/captura_5_reto_diario.jpg", texto: "Reto diario" },
-      { src: "img/adivina/captura_6_acompanante.jpg", texto: "Modo acompañante" },
-    ],
-  },
+  // Adivina lo que pienso: su ficha viene del repo juego-adivina (ficha_web/ficha.json).
+  // No se edita aquí: ver "Fichas sincronizadas" en CLAUDE.md.
+  (window.FICHAS || {})["adivina"],
   {
     id: "profe-pro",
     nombre: "Profe Pro",
@@ -146,13 +113,12 @@ const JUEGOS = [
       { titulo: "Nube cifrada", texto: "Inicia sesión para guardar y sincronizar tus documentos. Solo tu cuenta puede leerlos." },
     ],
   },
-];
+].filter(Boolean);   // si una ficha no carga, se omite en vez de romper la web
 
 // Noticias del estudio (la más nueva arriba). Para añadir una, copia una línea.
+// Las noticias de las fichas sincronizadas (js/fichas/) se mezclan solas por fecha.
 const NOTICIAS = [
-  { fecha: "2026-11-14", texto: "Adivina lo que pienso ya está en prueba en Google Play: duelo por turnos contra la IA, modo escuela con seis niveles, ortografía, lectura, Historia y más, y herramientas para docentes." },
   { fecha: "2026-11-12", texto: "TecnoDiagmarGames también hace apps: conoce Profe Pro, el asistente para docentes, y Pliego PDF, para escanear, convertir y entender tus documentos. Las dos llegarán pronto a Google Play." },
-  { fecha: "2026-11-12", texto: "Presentamos nuestro segundo juego: Adivina lo que pienso, un duelo de preguntas de sí o no para jugar con amigos, contra la IA o en clase. Muy pronto en Google Play." },
   { fecha: "2026-11-09", texto: "Orbit King 0.12.0 ya está en Google Play: jefes al final de cada mundo, tienda premium y opción de quitar anuncios." },
   { fecha: "2026-10-24", texto: "Nueva sección de prototipos: prueba el Duelo online de Orbit King en el navegador y dinos qué te parece." },
   { fecha: "2026-10-24", texto: "Orbit King 0.8.1 ya está en la prueba cerrada de Google Play: modos Aventura y Escape, 50 niveles en 3 mundos y corredor en 3D." },

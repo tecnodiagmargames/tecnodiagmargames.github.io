@@ -11,6 +11,12 @@ Web oficial del estudio **TecnoDiagmarGames** (así se escribe el nombre), publi
 - `js/sitio.js`: lógica (tarjetas, fichas, cifras de la portada, pie con privacidades, fondo de estrellas, opiniones).
 - `css/estilo.css`: diseño (espacio + neón, violeta del estudio).
 
+## Fichas sincronizadas (desde el repo de cada juego)
+- **Adivina lo que pienso** no se edita en `js/juegos.js`: su ficha (textos, estado, versión, enlaces, capturas, novedades y noticias) vive en el repo `proelmas601/juego-adivina`, carpeta `ficha_web/` (`ficha.json` + `img/`). La versión se lee de su `pubspec.yaml`.
+- Para pasarla a la web: `python3 tool/sincronizar.py ../juego-adivina` (con los dos repos clonados uno al lado del otro). Copia las imágenes a `img/adivina/` y genera `js/fichas/adivina.js`, que las páginas cargan antes de `js/juegos.js`. No editar `js/fichas/*.js` a mano.
+- En cada sesión de este proyecto: revisar si `juego-adivina/ficha_web/` o su versión cambiaron (`git log -- ficha_web pubspec.yaml`) y, si es así, sincronizar y publicar.
+- Para sumar otro producto a este sistema: crear `ficha_web/ficha.json` + `ficha_web/img/` en su repo, poner `(window.FICHAS || {})["<id>"]` en `JUEGOS` y el `<script src="js/fichas/<id>.js">` en `index.html`, `juego.html` y `prototipo.html`.
+
 ## No romper
 - `orbit-king/version.json`: Orbit King lo lee para avisar de actualizar. Al publicar una versión en Play, subir `version` y `code`.
 - `app-ads.txt` (AdMob), `CNAME`, `.nojekyll`, y el enlace viejo `juego.html?id=orbit-dash` (id de Orbit King).
