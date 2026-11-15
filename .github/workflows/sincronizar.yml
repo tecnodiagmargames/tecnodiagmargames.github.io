@@ -1,0 +1,67 @@
+# Actualiza sola la web con las fichas y las páginas legales de cada producto.
+# Cada 30 minutos (y con el botón "Run workflow") lee ficha_web/ y docs/ de los repos
+# de tool/productos.json, ejecuta tool/sincronizar.py y publica los cambios en main.
+# Necesita el secreto PRODUCTOS_TOKEN: token de GitHub de solo lectura (Contents: Read)
+# sobre esos repos. Nunca toca orbit-king/version.json, app-ads.txt ni CNAME.
+name: Sincronizar productos
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [sincronizar]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sincronizar
+  cancel-in-progress: false
+
+jobs:
+  sincronizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Descargar ficha_web y docs de cada producto
+        env:
+          TOKEN: ${{ secrets.PRODUCTOS_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "::error::Falta el secreto PRODUCTOS_TOKEN (ver CLAUDE.md, «Actualización automática»)."
+            exit 1
+          fi
+          mkdir -p productos
+          for fila in $(jq -r '.[] | "\(.repo)|\(.carpeta)"' tool/productos.json); do
+            repo="${fila%%|*}"; dir="productos/${fila##*|}"
+            git clone --quiet --depth 1 --filter=blob:none --sparse \
+              "https://x-access-token:${TOKEN}@github.com/${repo}.git" "$dir"
+            git -C "$dir" sparse-checkout set ficha_web docs
+          done
+
+      - name: Sincronizar
+        run: python3 tool/sincronizar.py productos/*
+
+      - name: Publicar si algo cambió
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Sin cambios."
+            exit 0
+          fi
+          # Solo se permiten imágenes, fichas generadas y páginas .html de productos.
+          raros=$(git diff --cached --name-only | grep -vE '^(img/[a-z0-9-]+/[^/]+|js/fichas/[a-z0-9-]+\.js|[a-z0-9-]+/[a-z0-9-]+\.html)$' || true)
+          prohibidos=$(git diff --cached --name-only | grep -E '(^|/)(version\.json|app-ads\.txt|CNAME)$|^(index|juego|prototipo)\.html$' || true)
+          if [ -n "$raros$prohibidos" ]; then
+            echo "::error::La sincronización intentó cambiar archivos no permitidos:"
+            echo "$raros$prohibidos"
+            exit 1
+          fi
+          git diff --cached --stat
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -q -m "sync: fichas y páginas de los productos"
+          git push

@@ -22,75 +22,11 @@ const ESTUDIO = {
 };
 
 const JUEGOS = [
-  {
-    id: "orbit-dash",   // se mantiene para no romper enlaces viejos (juego.html?id=orbit-dash)
-    nombre: "Orbit King",
-    tipo: "juego",
-    lema: "Salta entre órbitas, esquiva rojos y atrapa orbes en un reto de reflejos neón.",
-    estado: "disponible",
-    playUrl: "https://play.google.com/store/apps/details?id=com.tecnodiagmar.orbitdash",
-    plataforma: "Android",
-    modelo: "Gratis con anuncios y compras opcionales",
-    genero: "Arcade · Reflejos",
-    color: "#22e5ff",
-    icono: "img/orbit-king/icono.png",
-    portada: "img/orbit-king/portada.png",
-    privacidad: "https://proelmas601.github.io/orbit-dash-privacy/",
-    condiciones: "orbit-king/condiciones.html",
-    descripcion: [
-      "Tu bolita gira sin parar alrededor de un planeta: toca para saltar de órbita, atrapa los orbes amarillos y esquiva los rojos. Fácil de aprender, difícil de dominar.",
-      "Se juega con una mano, sin conexión y en partidas cortas. La calidad gráfica se ajusta sola a tu teléfono.",
-    ],
-    caracteristicas: [
-      { titulo: "Aventura", texto: "Viaja de galaxia en galaxia: las órbitas cambian, se desenrollan en carriles y aparecen líneas nuevas. Elige Normal o Extremo." },
-      { titulo: "Escape", texto: "El sol crece sin parar y quema las órbitas. Atrapa orbes azules para abrir líneas por fuera y huye de estrella en estrella." },
-      { titulo: "9 mundos y sus jefes", texto: "Más de 150 niveles, de Novatos al Imposible, pasando por el Infierno, el Glaciar eterno o la Carrera. Cada mundo acaba con un jefe que tiene su propia canción." },
-      { titulo: "Duelo online", texto: "Reta a otro jugador en tiempo real o a un amigo con un código de sala, y sube en el ranking de trofeos." },
-      { titulo: "Corredor en 3D", texto: "Las órbitas se estiran en una pista que corre hacia ti: salta los rojos, pasa por debajo de los arcos y cambia de línea." },
-      { titulo: "Personaliza", texto: "Colores, formas, estelas, órbitas, estallidos al chocar, entradas de cine, fondos y música." },
-      { titulo: "Premios y retos", texto: "Retos diarios, ruleta, más de 50 logros, cofres, diamantes y boosters como imán x2 o doble monedas." },
-    ],
-    capturas: [
-      { src: "img/orbit-king/captura_1_corredor_3d.jpg", texto: "Corredor en 3D" },
-      { src: "img/orbit-king/captura_2_aventura.jpg", texto: "Aventura" },
-      { src: "img/orbit-king/captura_3_escape.jpg", texto: "Modo Escape" },
-      { src: "img/orbit-king/captura_4_niveles.jpg", texto: "Mundos y niveles" },
-      { src: "img/orbit-king/captura_5_premios.jpg", texto: "Premios y cofres" },
-      { src: "img/orbit-king/captura_6_personaliza.jpg", texto: "Tienda" },
-      { src: "img/orbit-king/captura_7_entradas.jpg", texto: "Entradas de cine" },
-      { src: "img/orbit-king/captura_8_reflejos.jpg", texto: "Reflejos neón" },
-    ],
-  },
-  // Adivina lo que pienso: su ficha viene del repo juego-adivina (ficha_web/ficha.json).
-  // No se edita aquí: ver "Fichas sincronizadas" en CLAUDE.md.
+  // Las fichas de Orbit King, Adivina y Profe Pro vienen de los repos de cada producto
+  // (ficha_web/ficha.json) y se actualizan solas: ver "Fichas sincronizadas" en CLAUDE.md.
+  (window.FICHAS || {})["orbit-dash"],   // id viejo: no romper juego.html?id=orbit-dash
   (window.FICHAS || {})["adivina"],
-  {
-    id: "profe-pro",
-    nombre: "Profe Pro",
-    tipo: "app",
-    lema: "La mano derecha del docente: prepara clases con IA, lleva notas y asistencia y conecta con tus estudiantes.",
-    estado: "desarrollo",
-    playUrl: "",
-    plataforma: "Android",
-    genero: "Educación",
-    modelo: "Gratis con plan Pro",
-    color: "#3b82f6",
-    icono: "img/profe-pro/icono.png",
-    portada: "img/profe-pro/portada.jpg",
-    privacidad: "",
-    descripcion: [
-      "Profe Pro está pensada para profes ocupados: botones grandes, lenguaje claro y todo lo de la clase en un solo lugar.",
-      "Escribe el tema, el grado y la duración, y la app te propone un plan de clase, un taller o diapositivas que puedes cambiar y descargar en PDF. La IA nunca recibe los nombres de tus estudiantes.",
-    ],
-    caracteristicas: [
-      { titulo: "Clases en minutos", texto: "Planes de clase, talleres y diapositivas con IA, editables y en PDF." },
-      { titulo: "La IA propone, tú decides", texto: "Sube trabajos en foto, PDF o Word y recibe una nota sugerida por criterio. Nada se guarda sin tu visto bueno." },
-      { titulo: "Notas y asistencia", texto: "Libro de notas con promedios ponderados, exportación a Excel y PDF, y asistencia rápida incluso sin internet." },
-      { titulo: "Lo administrativo", texto: "Informes, circulares, cartas a acudientes y constancias redactadas con IA, más un calendario con recordatorios." },
-      { titulo: "Estudiantes conectados", texto: "Se unen con un código para ver tareas, notas y mensajes y entregar sus trabajos. Los menores entran con autorización de su acudiente." },
-      { titulo: "Privacidad primero", texto: "Sin publicidad y sin vender datos. Los nombres se ocultan antes de enviar cualquier texto a la IA." },
-    ],
-  },
+  (window.FICHAS || {})["profe-pro"],
   {
     id: "pliego-pdf",
     nombre: "Pliego PDF",
