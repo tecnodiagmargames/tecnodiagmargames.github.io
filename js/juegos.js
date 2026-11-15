@@ -36,6 +36,7 @@ const JUEGOS = [
     icono: "img/orbit-king/icono.png",
     portada: "img/orbit-king/portada.png",
     privacidad: "https://proelmas601.github.io/orbit-dash-privacy/",
+    condiciones: "orbit-king/condiciones.html",
     descripcion: [
       "Tu bolita gira sin parar alrededor de un planeta: toca para saltar de órbita, atrapa los orbes amarillos y esquiva los rojos. Fácil de aprender, difícil de dominar.",
       "Se juega con una mano, sin conexión y en partidas cortas. La calidad gráfica se ajusta sola a tu teléfono.",
@@ -120,6 +121,7 @@ const JUEGOS = [
 // Noticias del estudio (la más nueva arriba). Para añadir una, copia una línea.
 // Las noticias de las fichas sincronizadas (js/fichas/) se mezclan solas por fecha.
 const NOTICIAS = [
+  { fecha: "2026-11-13", texto: "Orbit King 0.13.0 ya está en Google Play: skins legendarias, pase de temporada gratis, pases semanal y mensual, oferta del día y una tienda renovada." },
   { fecha: "2026-11-12", texto: "TecnoDiagmarGames también hace apps: conoce Profe Pro, el asistente para docentes, y Pliego PDF, para escanear, convertir y entender tus documentos. Las dos llegarán pronto a Google Play." },
   { fecha: "2026-11-09", texto: "Orbit King 0.12.0 ya está en Google Play: jefes al final de cada mundo, tienda premium y opción de quitar anuncios." },
   { fecha: "2026-10-24", texto: "Nueva sección de prototipos: prueba el Duelo online de Orbit King en el navegador y dinos qué te parece." },
