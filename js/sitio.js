@@ -198,6 +198,7 @@ function pintarJuego() {
     <section class="contenedor juego-pie">
       ${j.terminos ? `<a class="enlace" href="${esc(j.terminos)}" target="_blank" rel="noopener">Términos de ${esc(j.nombre)}</a>` : ""}
       ${j.privacidad ? `<a class="enlace" href="${esc(j.privacidad)}" target="_blank" rel="noopener">Política de privacidad de ${esc(j.nombre)}</a>` : ""}
+      ${j.condiciones ? `<a class="enlace" href="${esc(j.condiciones)}">Condiciones del servicio de ${esc(j.nombre)}</a>` : ""}
       ${(j.tipo || "juego") === "app"
         ? '<a class="enlace" href="index.html#apps">← Todas las apps</a>'
         : '<a class="enlace" href="index.html#juegos">← Todos los juegos</a>'}
