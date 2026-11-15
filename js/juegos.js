@@ -8,8 +8,12 @@
 //           "desarrollo"  -> "En desarrollo"
 //           "secreto"     -> tarjeta misteriosa (sin detalles)
 //
+//  tipo:    "juego" o "app" (sale en la sección Juegos o en Apps de la portada)
 //  modelo:  texto corto del precio (p. ej. "Gratis con anuncios").
 //  capturas y caracteristicas son opcionales (si faltan, no sale esa sección).
+//  version, estadoTexto, terminos y novedades también son opcionales.
+//  tema:    opcional. La ficha usa el tema "tema-<id>" de css/estilo.css
+//           (o "tema-<tema>" si se pone). Sin tema propio = tema de la empresa.
 // ============================================================
 
 const ESTUDIO = {
@@ -21,6 +25,7 @@ const JUEGOS = [
   {
     id: "orbit-dash",   // se mantiene para no romper enlaces viejos (juego.html?id=orbit-dash)
     nombre: "Orbit King",
+    tipo: "juego",
     lema: "Salta entre órbitas, esquiva rojos y atrapa orbes en un reto de reflejos neón.",
     estado: "disponible",
     playUrl: "https://play.google.com/store/apps/details?id=com.tecnodiagmar.orbitdash",
@@ -55,48 +60,67 @@ const JUEGOS = [
       { src: "img/orbit-king/captura_8_reflejos.jpg", texto: "Reflejos neón" },
     ],
   },
+  // Adivina lo que pienso: su ficha viene del repo juego-adivina (ficha_web/ficha.json).
+  // No se edita aquí: ver "Fichas sincronizadas" en CLAUDE.md.
+  (window.FICHAS || {})["adivina"],
   {
-    id: "adivina",
-    nombre: "Adivina lo que pienso",
-    lema: "Piensa una palabra en secreto y descubre la de tu rival con preguntas de sí o no.",
-    estado: "prueba",
+    id: "profe-pro",
+    nombre: "Profe Pro",
+    tipo: "app",
+    lema: "La mano derecha del docente: prepara clases con IA, lleva notas y asistencia y conecta con tus estudiantes.",
+    estado: "desarrollo",
     playUrl: "",
     plataforma: "Android",
-    genero: "Palabras · Familia y escuela",
-    modelo: "Gratis",
-    color: "#ec4899",
-    icono: "img/adivina/icono.png",
-    portada: "img/adivina/portada.jpg",
-    privacidad: "https://adivina-lo-que-pienso.web.app/privacidad.html",
+    genero: "Educación",
+    modelo: "Gratis con plan Pro",
+    color: "#3b82f6",
+    icono: "img/profe-pro/icono.png",
+    portada: "img/profe-pro/portada.jpg",
+    privacidad: "",
     descripcion: [
-      "Cada jugador elige en secreto una palabra de un tema (animales, frutas, profesiones, deportes…) y, por turnos, se hacen preguntas de sí o no. Gana quien adivine antes la palabra del otro. Si se atascan, pueden pedir una pista.",
-      "Se juega en línea entre dos teléfonos, con videollamada, contra una IA con voz y personalidad, o en persona con el modo acompañante y el modo fiesta. Además tiene un modo escuela completo para que estudiantes y docentes aprendan jugando.",
+      "Profe Pro está pensada para profes ocupados: botones grandes, lenguaje claro y todo lo de la clase en un solo lugar.",
+      "Escribe el tema, el grado y la duración, y la app te propone un plan de clase, un taller o diapositivas que puedes cambiar y descargar en PDF. La IA nunca recibe los nombres de tus estudiantes.",
     ],
     caracteristicas: [
-      { titulo: "En línea y en vivo", texto: "Crea una sala, comparte el código y juega en modo Clásico, Contrarreloj, Sin pistas, Tema sorpresa o Torneo. También con videollamada o solo con micrófono." },
-      { titulo: "Contra la IA", texto: "Adivina la palabra de la máquina, deja que ella adivine la tuya (queda guardada para que nadie haga trampa) o enfréntense en un duelo por turnos. Tiene voz, tres personalidades y tres dificultades." },
-      { titulo: "Modo escuela", texto: "Seis niveles, desde los 6 años hasta adultos: lengua, ortografía, verbos, comprensión lectora, inglés, Matemáticas, Geografía, Ciencias, Historia y Cultura general." },
-      { titulo: "Aprender cada día", texto: "Repaso inteligente de lo que te costó, racha con meta diaria, palabra del día, prueba de nivel, modo examen con nota y dictado con voz." },
-      { titulo: "Para docentes", texto: "Clases con código o QR, tareas con fecha de entrega, panel con quién va atrasado, insignias para los estudiantes e informe en Excel." },
-      { titulo: "Reto diario", texto: "Una palabra para todos cada día, un solo intento y una racha que cuidar." },
-      { titulo: "Modo fiesta y acompañante", texto: "Para jugar en grupo con un solo teléfono, o con marcador y cronómetro en persona o en directo." },
-      { titulo: "Amigos y logros", texto: "Agrega amigos por código, compite en el ranking semanal, cumple misiones, sube de nivel y desbloquea temas y avatares." },
-    ],
-    capturas: [
-      { src: "img/adivina/captura_1_inicio.jpg", texto: "Inicio" },
-      { src: "img/adivina/captura_2_partida.jpg", texto: "Partida" },
-      { src: "img/adivina/captura_3_pregunta.jpg", texto: "Pregunta de tu rival" },
-      { src: "img/adivina/captura_4_resultado.jpg", texto: "¡Ganaste!" },
-      { src: "img/adivina/captura_5_reto_diario.jpg", texto: "Reto diario" },
-      { src: "img/adivina/captura_6_acompanante.jpg", texto: "Modo acompañante" },
+      { titulo: "Clases en minutos", texto: "Planes de clase, talleres y diapositivas con IA, editables y en PDF." },
+      { titulo: "La IA propone, tú decides", texto: "Sube trabajos en foto, PDF o Word y recibe una nota sugerida por criterio. Nada se guarda sin tu visto bueno." },
+      { titulo: "Notas y asistencia", texto: "Libro de notas con promedios ponderados, exportación a Excel y PDF, y asistencia rápida incluso sin internet." },
+      { titulo: "Lo administrativo", texto: "Informes, circulares, cartas a acudientes y constancias redactadas con IA, más un calendario con recordatorios." },
+      { titulo: "Estudiantes conectados", texto: "Se unen con un código para ver tareas, notas y mensajes y entregar sus trabajos. Los menores entran con autorización de su acudiente." },
+      { titulo: "Privacidad primero", texto: "Sin publicidad y sin vender datos. Los nombres se ocultan antes de enviar cualquier texto a la IA." },
     ],
   },
-];
+  {
+    id: "pliego-pdf",
+    nombre: "Pliego PDF",
+    tipo: "app",
+    lema: "Escanea, edita y convierte tus documentos en el teléfono, con resúmenes y preguntas con IA.",
+    estado: "desarrollo",
+    playUrl: "",
+    plataforma: "Android",
+    genero: "Productividad · Documentos",
+    modelo: "Gratis con Premium",
+    color: "#6d5bff",
+    icono: "img/pliego-pdf/icono.png",
+    portada: "img/pliego-pdf/portada.jpg",
+    privacidad: "https://proelmas601.github.io/pliego-pdf-privacidad/",
+    descripcion: [
+      "Pliego PDF trabaja con tus documentos en tu propio teléfono: el escaneo, el reconocimiento de texto y casi todas las herramientas funcionan sin conexión, y tus archivos no salen del dispositivo.",
+      "Cuando lo necesitas, convierte archivos de Office a PDF y al revés, resume un documento o respóndele preguntas con IA, y guarda copias cifradas en la nube.",
+    ],
+    caracteristicas: [
+      { titulo: "Escanea y reconoce texto", texto: "Convierte fotos de hojas en PDF y extrae su texto (OCR) sin conexión." },
+      { titulo: "Convierte", texto: "Word, Excel y PowerPoint a PDF, PDF a Word o texto, y PDF/A para archivar." },
+      { titulo: "IA para tus documentos", texto: "Pide un resumen o hazle preguntas a un documento largo." },
+      { titulo: "Nube cifrada", texto: "Inicia sesión para guardar y sincronizar tus documentos. Solo tu cuenta puede leerlos." },
+    ],
+  },
+].filter(Boolean);   // si una ficha no carga, se omite en vez de romper la web
 
 // Noticias del estudio (la más nueva arriba). Para añadir una, copia una línea.
+// Las noticias de las fichas sincronizadas (js/fichas/) se mezclan solas por fecha.
 const NOTICIAS = [
-  { fecha: "2026-11-14", texto: "Adivina lo que pienso ya está en prueba en Google Play: duelo por turnos contra la IA, modo escuela con seis niveles, ortografía, lectura, Historia y más, y herramientas para docentes." },
-  { fecha: "2026-11-12", texto: "Presentamos nuestro segundo juego: Adivina lo que pienso, un duelo de preguntas de sí o no para jugar con amigos, contra la IA o en clase. Muy pronto en Google Play." },
+  { fecha: "2026-11-12", texto: "TecnoDiagmarGames también hace apps: conoce Profe Pro, el asistente para docentes, y Pliego PDF, para escanear, convertir y entender tus documentos. Las dos llegarán pronto a Google Play." },
   { fecha: "2026-11-09", texto: "Orbit King 0.12.0 ya está en Google Play: jefes al final de cada mundo, tienda premium y opción de quitar anuncios." },
   { fecha: "2026-10-24", texto: "Nueva sección de prototipos: prueba el Duelo online de Orbit King en el navegador y dinos qué te parece." },
   { fecha: "2026-10-24", texto: "Orbit King 0.8.1 ya está en la prueba cerrada de Google Play: modos Aventura y Escape, 50 niveles en 3 mundos y corredor en 3D." },
@@ -115,6 +139,7 @@ const PROTOTIPOS = [
     id: "duelo",
     nombre: "Duelo online",
     juego: "Orbit King",
+    juegoId: "orbit-dash",   // sale en la ficha de este producto y usa su tema
     fecha: "2026-10-24",
     color: "#b77bff",
     url: "prototipos/duelo/index.html",

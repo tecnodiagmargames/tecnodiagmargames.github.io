@@ -1,5 +1,9 @@
 // Lógica de la web: pinta tarjetas, la página de cada juego y el fondo de estrellas.
 // Los datos están en juegos.js (no hace falta tocar este archivo para añadir juegos).
+//
+// Temas: la portada usa el tema de la EMPRESA (claro). La ficha de cada producto
+// pone en <body> la clase "tema-<id>" (o "tema-<tema>" si el producto trae `tema`)
+// y css/estilo.css le da sus colores y letras. Las estrellas solo salen en Orbit King.
 
 const ESTADOS = {
   disponible: "Disponible",
@@ -7,6 +11,17 @@ const ESTADOS = {
   desarrollo: "En desarrollo",
   secreto: "Próximamente",
 };
+
+// Texto del estado: la ficha puede traer uno propio (p. ej. "En prueba interna").
+function textoEstado(j) {
+  return j.estadoTexto || ESTADOS[j.estado] || j.estado;
+}
+
+// Noticias del estudio + las de las fichas sincronizadas, de la más nueva a la más vieja.
+function todasLasNoticias() {
+  const deFichas = JUEGOS.flatMap((j) => j.noticias || []);
+  return NOTICIAS.concat(deFichas).sort((a, b) => b.fecha.localeCompare(a.fecha));
+}
 
 function esc(t) {
   const d = document.createElement("div");
@@ -39,7 +54,7 @@ function tarjeta(j) {
       <img src="${esc(j.portada)}" alt="${esc(j.nombre)}" loading="lazy">
     </a>
     <div class="tarjeta-cuerpo">
-      <span class="estado estado-${esc(j.estado)}">${esc(ESTADOS[j.estado] || j.estado)}</span>
+      <span class="estado estado-${esc(j.estado)}">${esc(textoEstado(j))}</span>
       <h3><a href="juego.html?id=${encodeURIComponent(j.id)}">${esc(j.nombre)}</a></h3>
       <p>${esc(j.lema)}</p>
       <div class="tarjeta-acciones">
@@ -50,6 +65,28 @@ function tarjeta(j) {
   </article>`;
 }
 
+// Pone el tema de un producto en la página (clase en <body> y color de la barra del móvil).
+function ponerTema(id) {
+  if (!id) return;
+  document.body.classList.add("tema-" + id);
+  const fondo = getComputedStyle(document.body).getPropertyValue("--fondo").trim();
+  let meta = document.querySelector('meta[name="theme-color"]');
+  if (!meta) { meta = document.createElement("meta"); meta.name = "theme-color"; document.head.appendChild(meta); }
+  if (fondo) meta.content = fondo;
+}
+
+function temaDe(j) {
+  return j.tema || j.id;
+}
+
+// Vitrina de la portada: el icono de cada producto, enlazado a su página.
+function itemVitrina(j) {
+  return `<a class="vitrina-item" href="juego.html?id=${encodeURIComponent(j.id)}" style="--c:${esc(j.color)}">
+    <img src="${esc(j.icono)}" alt="" width="96" height="96" loading="lazy">
+    <b>${esc(j.nombre)}</b><small>${(j.tipo || "juego") === "app" ? "App" : "Juego"}</small>
+  </a>`;
+}
+
 function fechaBonita(iso) {
   const [a, m, d] = iso.split("-").map(Number);
   const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
@@ -57,12 +94,22 @@ function fechaBonita(iso) {
 }
 
 function pintarInicio() {
+  const tipo = (j) => j.tipo || "juego";
   const lista = document.getElementById("lista-juegos");
-  if (lista) lista.innerHTML = JUEGOS.map(tarjeta).join("");
+  if (lista) lista.innerHTML = JUEGOS.filter((j) => tipo(j) === "juego").map(tarjeta).join("");
+  const apps = document.getElementById("lista-apps");
+  if (apps) {
+    const lasApps = JUEGOS.filter((j) => tipo(j) === "app");
+    apps.innerHTML = lasApps.map(tarjeta).join("");
+    if (!lasApps.length) apps.closest("section").hidden = true;
+  }
+
+  const vitrina = document.getElementById("vitrina");
+  if (vitrina) vitrina.innerHTML = JUEGOS.filter((j) => j.estado !== "secreto" && j.icono).slice(0, 4).map(itemVitrina).join("");
 
   const noticias = document.getElementById("lista-noticias");
   if (noticias) {
-    noticias.innerHTML = NOTICIAS.map(
+    noticias.innerHTML = todasLasNoticias().map(
       (n) => `<li><time datetime="${esc(n.fecha)}">${fechaBonita(n.fecha)}</time><span>${esc(n.texto)}</span></li>`
     ).join("");
   }
@@ -79,13 +126,15 @@ function pintarInicio() {
   const cifras = document.getElementById("cifras");
   if (cifras) {
     const visibles = JUEGOS.filter((j) => j.estado !== "secreto");
+    const juegos = visibles.filter((j) => (j.tipo || "juego") === "juego").length;
+    const nApps = visibles.length - juegos;
     const enPlay = visibles.filter((j) => j.estado === "disponible").length;
     const datos = [
-      [visibles.length, visibles.length === 1 ? "juego" : "juegos"],
+      [juegos, juegos === 1 ? "juego" : "juegos"],
+      [nApps, nApps === 1 ? "app" : "apps"],
       [enPlay, "en Google Play"],
       [visibles.length - enPlay, "en camino"],
-      [typeof PROTOTIPOS !== "undefined" ? PROTOTIPOS.length : 0, PROTOTIPOS.length === 1 ? "prototipo para probar" : "prototipos para probar"],
-    ];
+    ].filter(([n]) => n > 0);
     cifras.innerHTML = datos.map(([n, t]) => `<li><b>${n}</b><span>${esc(t)}</span></li>`).join("");
   }
 }
@@ -96,19 +145,21 @@ function pintarJuego() {
   const id = new URLSearchParams(location.search).get("id");
   const j = JUEGOS.find((x) => x.id === id && x.estado !== "secreto");
   if (!j) {
-    zona.innerHTML = `<section class="contenedor vacio"><h1>Juego no encontrado</h1><p><a class="enlace" href="index.html#juegos">← Volver a los juegos</a></p></section>`;
+    zona.innerHTML = `<section class="contenedor vacio"><h1>Producto no encontrado</h1><p><a class="enlace" href="index.html#juegos">← Volver a los productos</a></p></section>`;
     return;
   }
   document.title = `${j.nombre} · ${ESTUDIO.nombre}`;
+  ponerTema(temaDe(j));
   zona.style.setProperty("--c", j.color);
+  const protos = (typeof PROTOTIPOS !== "undefined" ? PROTOTIPOS : []).filter((p) => p.juegoId === j.id);
   zona.innerHTML = `
     <section class="juego-cabecera contenedor">
       <img class="juego-icono" src="${esc(j.icono)}" alt="Icono de ${esc(j.nombre)}" width="128" height="128">
       <div>
-        <span class="estado estado-${esc(j.estado)}">${esc(ESTADOS[j.estado] || j.estado)}</span>
+        <span class="estado estado-${esc(j.estado)}">${esc(textoEstado(j))}</span>
         <h1>${esc(j.nombre)}</h1>
         <p class="lema">${esc(j.lema)}</p>
-        <p class="meta">${[j.plataforma, j.genero, j.modelo].filter(Boolean).map(esc).join(" · ")}</p>
+        <p class="meta">${[j.plataforma, j.genero, j.modelo, j.version && `Versión ${j.version}`].filter(Boolean).map(esc).join(" · ")}</p>
         <div class="tarjeta-acciones">${botonPlay(j)}</div>
       </div>
     </section>
@@ -131,10 +182,32 @@ function pintarJuego() {
       </div>
     </section>` : ""}
 
+    ${j.novedades && j.novedades.length ? `<section class="contenedor">
+      <h2 class="titulo-seccion">Novedades</h2>
+      <ul class="noticias">
+        ${j.novedades.map((n) => `<li><time datetime="${esc(n.fecha)}">${fechaBonita(n.fecha)}</time><span>${n.version ? `<b>${esc(n.version)}</b> · ` : ""}${esc(n.texto)}</span></li>`).join("")}
+      </ul>
+    </section>` : ""}
+
+    ${protos.length ? `<section class="contenedor" id="prototipos">
+      <h2 class="titulo-seccion">Prototipos</h2>
+      <p class="seccion-intro">Ideas jugables que todavía no están en ${esc(j.nombre)}. Pruébalas desde el navegador, califícalas y cuéntanos qué cambiarías.</p>
+      <div id="lista-prototipos" class="lista-juegos"></div>
+    </section>` : ""}
+
     <section class="contenedor juego-pie">
+      ${j.terminos ? `<a class="enlace" href="${esc(j.terminos)}" target="_blank" rel="noopener">Términos de ${esc(j.nombre)}</a>` : ""}
       ${j.privacidad ? `<a class="enlace" href="${esc(j.privacidad)}" target="_blank" rel="noopener">Política de privacidad de ${esc(j.nombre)}</a>` : ""}
-      <a class="enlace" href="index.html#juegos">← Todos los juegos</a>
+      ${(j.tipo || "juego") === "app"
+        ? '<a class="enlace" href="index.html#apps">← Todas las apps</a>'
+        : '<a class="enlace" href="index.html#juegos">← Todos los juegos</a>'}
     </section>`;
+
+  // La ficha se pinta después de cargar: si el enlace trae #seccion, ir a ella
+  if (location.hash) {
+    const destino = document.getElementById(location.hash.slice(1));
+    if (destino) setTimeout(() => destino.scrollIntoView(), 0);
+  }
 
   // Ver capturas en grande al tocarlas
   zona.querySelectorAll(".capturas img").forEach((img) => {
@@ -173,10 +246,12 @@ function tarjetaPrototipo(p) {
   </article>`;
 }
 
+// Prototipos de un producto, dentro de su ficha (juegoId = id del producto).
 function pintarPrototipos() {
   const lista = document.getElementById("lista-prototipos");
   if (!lista || typeof PROTOTIPOS === "undefined") return;
-  lista.innerHTML = PROTOTIPOS.map(tarjetaPrototipo).join("");
+  const id = new URLSearchParams(location.search).get("id");
+  lista.innerHTML = PROTOTIPOS.filter((p) => p.juegoId === id).map(tarjetaPrototipo).join("");
   if (!firebaseListo()) return;
   lista.querySelectorAll("[data-nota]").forEach(async (zona) => {
     try { zona.innerHTML = resumenNota(await leerComentarios(zona.dataset.nota)); } catch (e) { zona.innerHTML = ""; }
@@ -189,10 +264,12 @@ function pintarPrototipo() {
   const id = new URLSearchParams(location.search).get("id");
   const p = (typeof PROTOTIPOS !== "undefined" ? PROTOTIPOS : []).find((x) => x.id === id);
   if (!p) {
-    zona.innerHTML = `<section class="contenedor vacio"><h1>Prototipo no encontrado</h1><p><a class="enlace" href="index.html#prototipos">← Ver los prototipos</a></p></section>`;
+    zona.innerHTML = `<section class="contenedor vacio"><h1>Prototipo no encontrado</h1><p><a class="enlace" href="index.html#juegos">← Ver nuestros juegos</a></p></section>`;
     return;
   }
   document.title = `${p.nombre} · Prototipo · ${ESTUDIO.nombre}`;
+  const delJuego = JUEGOS.find((j) => j.id === p.juegoId);
+  if (delJuego) ponerTema(temaDe(delJuego));
   zona.style.setProperty("--c", p.color);
   const tactil = matchMedia("(pointer: coarse)").matches;
   zona.innerHTML = `
@@ -232,7 +309,9 @@ function pintarPrototipo() {
     </section>
 
     <section class="contenedor juego-pie">
-      <a class="enlace" href="index.html#prototipos">← Todos los prototipos</a>
+      ${delJuego
+        ? `<a class="enlace" href="juego.html?id=${encodeURIComponent(delJuego.id)}#prototipos">← Volver a ${esc(delJuego.nombre)}</a>`
+        : '<a class="enlace" href="index.html#juegos">← Nuestros juegos</a>'}
     </section>`;
 
   if (!firebaseListo()) {
@@ -384,7 +463,7 @@ const COLORES_COMETA = ["255,214,10", "34,229,255", "124,77,255", "255,255,255"]
 
 function estrellas() {
   const cv = document.getElementById("estrellas");
-  if (!cv) return;
+  if (!cv || getComputedStyle(cv).display === "none") return;   // solo en el tema de Orbit King
   const ctx = cv.getContext("2d");
   const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
   let lista = [];

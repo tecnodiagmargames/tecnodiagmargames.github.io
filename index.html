@@ -3,11 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TecnoDiagmarGames · Estudio de juegos para móvil</title>
-  <meta name="description" content="TecnoDiagmarGames es un estudio independiente de juegos para móvil. Conoce nuestros juegos: Orbit King, ya en Google Play, y Adivina lo que pienso.">
+  <title>TecnoDiagmarGames · Juegos y apps para móvil</title>
+  <meta name="description" content="TecnoDiagmarGames es un estudio independiente de juegos y apps para móvil: Orbit King, Adivina lo que pienso, Profe Pro y Pliego PDF.">
   <meta property="og:title" content="TecnoDiagmarGames">
-  <meta property="og:description" content="Estudio independiente de juegos para móvil: Orbit King, Adivina lo que pienso y lo que viene.">
-  <meta property="og:image" content="img/orbit-king/portada.png">
+  <meta property="og:description" content="Estudio independiente de juegos y apps para móvil: Orbit King, Adivina lo que pienso, Profe Pro y Pliego PDF.">
+  <meta property="og:image" content="https://tecnodiagmargames.com/img/estudio/portada.png">
+  <meta name="theme-color" content="#ffffff">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,8 +16,6 @@
   <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
-  <canvas id="estrellas" aria-hidden="true"></canvas>
-
   <header class="cabecera">
     <div class="contenedor cabecera-fila">
       <a class="marca" href="index.html" aria-label="TecnoDiagmarGames, inicio">
@@ -26,7 +25,7 @@
       <button id="boton-menu" class="boton-menu" aria-label="Abrir menú"><span></span><span></span><span></span></button>
       <nav class="nav">
         <a href="#juegos">Juegos</a>
-        <a href="#prototipos">Prototipos</a>
+        <a href="#apps">Apps</a>
         <a href="#noticias">Noticias</a>
         <a href="#estudio">Estudio</a>
         <a href="#contacto">Contacto</a>
@@ -37,33 +36,28 @@
   <main>
     <section class="hero contenedor">
       <div class="hero-texto">
-        <p class="antetitulo">Estudio independiente de juegos</p>
-        <h1>Creamos juegos<br><span class="neon">para jugar en cualquier lugar.</span></h1>
-        <p class="hero-sub"><b>TecnoDiagmarGames</b> es un estudio que diseña, programa y publica juegos para móvil: partidas cortas, mucho color y reglas que se aprenden en segundos. Todos nuestros juegos nacen y crecen aquí.</p>
+        <p class="antetitulo">Estudio independiente de juegos y apps</p>
+        <h1>Creamos juegos y apps<br><span class="neon">para tu día a día.</span></h1>
+        <p class="hero-sub"><b>TecnoDiagmarGames</b> es un estudio que diseña, programa y publica juegos y apps para móvil: juegos para divertirte en pocos minutos y herramientas que te ahorran trabajo. Todos nuestros productos nacen y crecen aquí.</p>
         <div class="hero-acciones">
-          <a class="btn-pri" href="#juegos">Ver nuestros juegos</a>
+          <a class="btn-pri" href="#juegos">Ver nuestros productos</a>
           <a class="btn-sec" href="#estudio">Conoce el estudio</a>
         </div>
         <ul id="cifras" class="cifras"></ul>
       </div>
-      <div class="hero-orbita" aria-hidden="true">
-        <div class="anillo a1"><i class="bola"></i></div>
-        <div class="anillo a2"><i class="orbe amarillo"></i></div>
-        <div class="anillo a3"><i class="orbe rojo"></i></div>
-        <div class="sol"></div>
-      </div>
+      <div id="vitrina" class="hero-vitrina" aria-label="Nuestros productos"></div>
     </section>
 
     <section id="juegos" class="contenedor">
       <h2 class="titulo-seccion">Nuestros juegos</h2>
-      <p class="seccion-intro">Cada juego tiene su ficha con capturas, novedades y enlace a Google Play.</p>
+      <p class="seccion-intro">Cada juego tiene su propia página, con su estilo, capturas, novedades y enlace a Google Play.</p>
       <div id="lista-juegos" class="lista-juegos"></div>
     </section>
 
-    <section id="prototipos" class="contenedor">
-      <h2 class="titulo-seccion">Prototipos</h2>
-      <p class="seccion-intro">Ideas jugables que todavía no están en ningún juego. Pruébalas desde el navegador, califícalas y cuéntanos qué cambiarías.</p>
-      <div id="lista-prototipos" class="lista-juegos"></div>
+    <section id="apps" class="contenedor">
+      <h2 class="titulo-seccion">Nuestras apps</h2>
+      <p class="seccion-intro">Herramientas para trabajar y estudiar mejor desde el teléfono.</p>
+      <div id="lista-apps" class="lista-juegos"></div>
     </section>
 
     <section id="noticias" class="contenedor">
@@ -75,8 +69,8 @@
       <h2 class="titulo-seccion">El estudio</h2>
       <div class="estudio-rejilla">
         <div>
-          <p>TecnoDiagmarGames es un pequeño estudio independiente que hace juegos para Android. Cada juego lo diseñamos, programamos y probamos nosotros mismos, y lo seguimos mejorando con lo que nos cuentan quienes lo juegan.</p>
-          <p>Hacemos juegos de reflejos como <b>Orbit King</b> y juegos para compartir con amigos, en familia o en clase como <b>Adivina lo que pienso</b>. Antes de llegar a un juego, muchas ideas pasan por la sección de prototipos para que tú las pruebes primero.</p>
+          <p>TecnoDiagmarGames es un pequeño estudio independiente que hace juegos y apps para Android. Cada producto lo diseñamos, programamos y probamos nosotros mismos, y lo seguimos mejorando con lo que nos cuentan quienes lo juegan.</p>
+          <p>Hacemos juegos de reflejos como <b>Orbit King</b> y juegos para compartir con amigos, en familia o en clase como <b>Adivina lo que pienso</b>. También creamos apps útiles: <b>Profe Pro</b> para docentes y <b>Pliego PDF</b> para tus documentos. Antes de llegar a un juego, muchas ideas se publican como prototipos jugables para que tú las pruebes primero.</p>
         </div>
         <ul class="valores">
           <li><b>Fáciles de aprender</b><span>Reglas que se entienden en segundos.</span></li>
@@ -100,6 +94,7 @@
     </div>
   </footer>
 
+  <script src="js/fichas/adivina.js"></script>
   <script src="js/juegos.js"></script>
   <script src="js/sitio.js"></script>
 </body>
