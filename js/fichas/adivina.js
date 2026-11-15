@@ -1,5 +1,5 @@
 // GENERADO por tool/sincronizar.py desde el repo del producto (juego-adivina/ficha_web/ficha.json).
-// No lo edites a mano: cambia la ficha en el repo del juego y vuelve a sincronizar.
+// No lo edites a mano: cambia la ficha en el repo del producto; la web se actualiza sola.
 var FICHAS = window.FICHAS || (window.FICHAS = {});
 FICHAS["adivina"] = {
   "id": "adivina",
@@ -15,8 +15,6 @@ FICHAS["adivina"] = {
   "color": "#ec4899",
   "icono": "img/adivina/icono.png",
   "portada": "img/adivina/portada.jpg",
-  "privacidad": "https://adivina-lo-que-pienso.web.app/privacidad.html",
-  "terminos": "https://adivina-lo-que-pienso.web.app/terminos.html",
   "descripcion": [
     "Cada jugador elige en secreto una palabra de un tema (animales, frutas, profesiones, deportes…) y, por turnos, se hacen preguntas de sí o no. Gana quien adivine antes la palabra del otro. Si se atascan, pueden pedir una pista.",
     "Se juega en línea entre dos teléfonos, con videollamada, contra una IA con voz y personalidad, o en persona con el modo acompañante y el modo fiesta. Además tiene un modo escuela completo para que estudiantes y docentes aprendan jugando."
@@ -87,6 +85,8 @@ FICHAS["adivina"] = {
       "texto": "Presentamos nuestro segundo juego: Adivina lo que pienso, un duelo de preguntas de sí o no para jugar con amigos, contra la IA o en clase. Muy pronto en Google Play."
     }
   ],
+  "privacidad": "adivina/privacidad.html",
+  "terminos": "adivina/terminos.html",
   "version": "1.0.0",
   "capturas": [
     {
